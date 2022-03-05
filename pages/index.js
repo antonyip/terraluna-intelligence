@@ -366,13 +366,13 @@ function ET_Circulation()
 
   React.useEffect(() => {
 
-    axios.get("/api/getPriceFromET?denom=uluna").then (response => {
+    axios.get("/api/getCircFromET?denom=uluna").then (response => {
       setLunaPrice(response);
     }).catch (error => {
       console.log(error);
     })
 
-    axios.get("/api/getPriceFromET?denom=uusd").then (response => {
+    axios.get("/api/getCircFromET?denom=uusd").then (response => {
       setUSTPrice(response);
     }).catch (error => {
       console.log(error);
