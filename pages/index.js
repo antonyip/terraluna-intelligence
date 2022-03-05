@@ -27,7 +27,8 @@ import { ConstructionOutlined, DateRange, Power } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
 import date from 'date-and-time';
 import Paper from '@mui/material/Paper';
-
+import Chart from 'chart.js/auto';
+/*
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -39,8 +40,9 @@ import {
   ArcElement,
   PointElement,
   LineElement,
+  PieElement,
 } from 'chart.js';
-import { Line, Bar, Doughnut } from 'react-chartjs-2';
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -48,10 +50,13 @@ ChartJS.register(
   ArcElement,
   PointElement,
   LineElement,
+  PieElement,
   Title,
   Tooltip,
   Legend
 );
+*/
+import { Line, Bar, Doughnut } from 'react-chartjs-2';
 
 var colors = [
   '#F63E36',
@@ -708,6 +713,7 @@ function PermanentDrawerLeft() {
 }
 
 export default function Home() {
+
   return (
     <div className={styles.container}>
       <PermanentDrawerLeft />
