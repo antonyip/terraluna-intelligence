@@ -120,6 +120,7 @@ function Pages(props) {
   if(props.pageNumber === 1) {return (<div><BlockchainStatsPage /></div>);}
   if(props.pageNumber === 2) {return (<div><StableCoinPage /></div>);}
   if(props.pageNumber === 3) {return (<div><CW20Page /></div>);}
+  if(props.pageNumber === 8) {return (<div><FreeWillyPage /></div>);}
   
   if (props.pageNumber === 'Anchor') {return (<div><AnchorPage /></div>);}
   if (props.pageNumber === 'Knowhere') {return (<div><KnowherePage /></div>);}
@@ -644,12 +645,54 @@ function CW20Page()
     );
 }
 
+function FreeWillyPage()
+{
+  const [getData,setData] = useState("")
+  const [getDataLUNA,setDataLUNA] = useState("")
+  const [getDataETH,setDataETH] = useState("")
+
+  React.useEffect(() => {
+
+    axios.get("/api/getFreeWillyLiquidationProfile").then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
+    axios.get("/api/getFreeWillyLUNA").then (response => {
+      setDataLUNA(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
+    axios.get("/api/getFreeWillyETH").then (response => {
+      setDataETH(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
+  },[]);
+
+  if (getData === "") return (<div><CircularProgress /></div>);
+  if (getDataETH === "") return (<div><CircularProgress /></div>);
+  if (getDataLUNA === "") return (<div><CircularProgress /></div>);
+
+  console.log(getData.data);
+  console.log(getDataETH.data);
+  console.log(getDataLUNA.data);
+  return (<div>
+    In progress.. :P
+  </div>)
+}
+
 function AnchorPage()
 {
   const [getData,setData] = useState("")
   const [getDataStats,setDataStats] = useState("")
   const [getAncFlows,setAncFlows] = useState("")
   
+
+  //TODO: ADD this https://app.flipsidecrypto.com/dashboard/anchor-collaterals-UxMbQB
   React.useEffect(() => {
 
     axios.get("/api/getAncDailyDeals").then (response => {
@@ -965,7 +1008,25 @@ function PermanentDrawerLeft() {
               </ListItemIcon>
               <ListItemText primary={'CW20 Tokens'} />
             </ListItem>
-            <ListItem button key={'NFTs'} onClick={() => setPage(4)}>
+            <ListItem button key={'Market Flow'} onClick={() => setPage(5)}>
+              <ListItemIcon>
+              <Image alt="" src='/x.png' height={24} width={24} />
+              </ListItemIcon>
+              <ListItemText primary={'Market Flow'} />
+            </ListItem>
+            <ListItem button key={'Bridges'} onClick={() => setPage(6)}>
+              <ListItemIcon>
+              <Image alt="" src='/x.png' height={24} width={24} />
+              </ListItemIcon>
+              <ListItemText primary={'Bridges'} />
+            </ListItem>
+            <ListItem button key={'Luna Liq Queue'} onClick={() => setPage(8)}>
+              <ListItemIcon>
+              <Image alt="" src='/luna.png' height={24} width={24} />
+              </ListItemIcon>
+              <ListItemText primary={'Luna Liq Queue'} />
+            </ListItem>
+            <ListItem button key={'NFTs'} onClick={() => setPage(7)}>
               <ListItemIcon>
               <Image alt="" src='/x.png' height={24} width={24} />
               </ListItemIcon>
