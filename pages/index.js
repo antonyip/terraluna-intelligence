@@ -122,6 +122,9 @@ function Pages(props) {
   if(props.pageNumber === 3) {return (<div><CW20Page /></div>);}
   
   if (props.pageNumber === 'Anchor') {return (<div><AnchorPage /></div>);}
+  if (props.pageNumber === 'Knowhere') {return (<div><KnowherePage /></div>);}
+  if (props.pageNumber === 'RandomEarth') {return (<div><RandomEarthPage /></div>);}
+  
   return (
     <Typography paragraph>
       <h2> Sorry, page not done yet </h2>
@@ -166,7 +169,28 @@ function displayNiceTitle(myString)
 }
 
 //---------------------- Chart Functions
-function generateChartOptions(myVar) {
+function generateChartOptions(myVar, showLegend) {
+  return {
+    elements: {
+      bar: {
+        borderWidth: 2,
+      },
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        display: showLegend,
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: myVar,
+      },
+    },
+  };
+}
+
+function generateLRChartOptions(myVar) {
   return {
     elements: {
       bar: {
@@ -177,11 +201,26 @@ function generateChartOptions(myVar) {
     plugins: {
       legend: {
         display: true,
-        position: 'right',
+        position: 'top',
       },
       title: {
         display: true,
         text: myVar,
+      },
+    },
+    scales: {
+      y1: {
+        type: 'linear',
+        display: true,
+        position: 'left',
+      },
+      y2: {
+        type: 'linear',
+        display: true,
+        position: 'right',
+        grid: {
+          drawOnChartArea: false,
+        },
       },
     },
   };
@@ -226,13 +265,36 @@ function generateBarChartData(xValues, yValues) {
   };
 }
 
-function generateBarChartSeriesData(xValues, yValues) {
+function generateBarChartLRData(xValues, yValues, labels) {
+  var localDataset = []
+  localDataset.push({
+    type: 'line',
+    data: yValues[0],
+    label: labels[0],
+    backgroundColor: colors[4],
+    yAxisID: 'y1',
+  })
+  localDataset.push({
+    type: 'bar',
+    data: yValues[1],
+    label: labels[1],
+    backgroundColor: colors[0],
+    yAxisID: 'y2',
+  })
+return {
+  labels: xValues,
+  datasets: localDataset,
+};
+}
+
+function generateBarChartSeriesData(xValues, yValues, labels) {
     var localDataset = []
-    yValues.forEach(element => {
+    yValues.forEach((element,index) => {
       localDataset.push({
         type: 'bar',
         data: element,
-        backgroundColor: colors[0]
+        label: labels[index],
+        backgroundColor: colors[index]
       })
     });
     console.log(localDataset[localDataset.length-1]);
@@ -315,7 +377,7 @@ function BlockchainStatsPage()
     dataLunaPriceMin.push(d.MINLUNA);
     dataLunaPriceMax.push(d.MAXLUNA);
   })
-  var lunaPriceOptions = generateChartOptions("Daily Luna Price");
+  var lunaPriceOptions = generateChartOptions("Daily Luna Price", true);
   var lunaPrice = generateLunaPriceChartData(dataLunaPriceDate, dataLunaPrice, dataLunaPriceMin, dataLunaPriceMax);
 
   var dataTxsDate = []
@@ -324,7 +386,7 @@ function BlockchainStatsPage()
     dataTxsDate.push(d.DAY_DATE.substr(0,10));
     dataTxs.push(d.NUM_TXS);
   })
-  var lunaTxsOptions = generateChartOptions("Daily Number of Transactions (TerraLuna Module Interactions)");
+  var lunaTxsOptions = generateChartOptions("Daily Number of Transactions (TerraLuna Module Interactions)", false);
   var lunaTxs = generateBarChartData(dataTxsDate, dataTxs);
 
   var dataMsgDate = []
@@ -333,7 +395,7 @@ function BlockchainStatsPage()
     dataMsgDate.push(d.DAY_DATE.substr(0,10));
     dataMsg.push(d.NUM_TXS);
   })
-  var lunaMsgOptions = generateChartOptions("Daily Number of Msgs (Smart Contract Interactions)");
+  var lunaMsgOptions = generateChartOptions("Daily Number of Msgs (Smart Contract Interactions)", false);
   var lunaMsg = generateBarChartData(dataMsgDate, dataMsg);
 
   var dataVoteDate = []
@@ -344,7 +406,7 @@ function BlockchainStatsPage()
     dataVote.push(d.TOTAL_VOTING_POWER);
   })
 
-  var lunaVoteOptions = generateChartOptions("Daily Total Voting Power");
+  var lunaVoteOptions = generateChartOptions("Daily Total Voting Power", false);
   var lunaVote = generateBarChartData(dataVoteDate, dataVote);
 
   var dataBreakdownName = []
@@ -354,7 +416,7 @@ function BlockchainStatsPage()
     dataBreakdown.push(d.AVG_SUM_LUNA);
   })
 
-  var lunaBreakdownOptions = generateChartOptions("Current Luna Distribution");
+  var lunaBreakdownOptions = generateChartOptions("Current Luna Distribution", false);
   var lunaBreakdown = generatePieChartData(dataBreakdownName, dataBreakdown);
 
   return (
@@ -419,7 +481,7 @@ function ET_Circulation()
       limit -= 1;
     }
   });
-  var lunaBurnOptions = generateChartOptions("Luna in Circulation");
+  var lunaBurnOptions = generateChartOptions("Luna in Circulation", false);
   var lunaBurn = generateBarChartData(dataLunaDate, dataLunaBurnCirc);
 
   var dataUSTDate = []
@@ -433,7 +495,7 @@ function ET_Circulation()
       limit -= 1;
     }
   });
-  var USTBurnOptions = generateChartOptions("UST in Circulation");
+  var USTBurnOptions = generateChartOptions("UST in Circulation", false);
   var USTBurn = generateBarChartData(dataUSTDate, dataUSTBurn);
 
   return (
@@ -479,7 +541,7 @@ function StableCoinPage()
     dataLunaDate.push(element.DAY_DATE.substr(0,10));
     dataLunaBurn.push(element.NET_BURN);
   });
-  var lunaBurnOptions = generateChartOptions("Luna Daily Net Burn");
+  var lunaBurnOptions = generateChartOptions("Luna Daily Net Burn", false);
   var lunaBurn = generateBarChartData(dataLunaDate, dataLunaBurn);
 
   var dataUSTDate = []
@@ -488,7 +550,7 @@ function StableCoinPage()
     dataUSTDate.push(element.DAY_DATE.substr(0,10));
     dataUSTBurn.push(element.NET_BURN);
   });
-  var USTBurnOptions = generateChartOptions("UST Daily Net Mint");
+  var USTBurnOptions = generateChartOptions("UST Daily Net Mint", false);
   var USTBurn = generateBarChartData(dataUSTDate, dataUSTBurn);
 
   return (
@@ -541,7 +603,7 @@ function CW20Page()
   {
     dataLunaName.push([getPrices.data.prices[mykey].symbol, Math.round(getPrices.data.prices[mykey].price*1000) / 1000]);
   }
-  //var lunaBurnOptions = generateChartOptions("CW20 Market Caps");
+  //var lunaBurnOptions = generateChartOptions("CW20 Market Caps", false);
   //var lunaBurn = generateBarChartData(dataLunaName, dataLunaPrice);
 
   return (
@@ -601,12 +663,11 @@ function AnchorPage()
     dataRepay.push(-element.AMOUNT_REPAYED);
     dataNet.push(element.AMOUNT_BORROWED - element.AMOUNT_REPAYED);
   });
-  dataFinal.push(dataDate);
   dataFinal.push(dataBorrow);
   dataFinal.push(dataRepay);
   dataFinal.push(dataNet);
-  var USTBurnOptions = generateChartOptions("UST Amount Flows");
-  var USTBurn = generateBarChartSeriesData(dataDate, dataFinal);
+  var USTBurnOptions = generateChartOptions("UST Amount Flows", true);
+  var USTBurn = generateBarChartSeriesData(dataDate, dataFinal, ["Borrow", "Repay", "Net"]);
 
 
   var dataStatsDate = []
@@ -622,7 +683,7 @@ function AnchorPage()
   });
   dataStatsDate.reverse();
   dataStatsRate.reverse();
-  var ancInterestRateOptions = generateChartOptions("ANC Interest Rate");
+  var ancInterestRateOptions = generateChartOptions("ANC Interest Rate", false);
   var ancInterestRate = generateBarChartData(dataStatsDate, dataStatsRate);
 
   var dataStatsDate2 = []
@@ -638,7 +699,7 @@ function AnchorPage()
   });
   dataStatsDate2.reverse();
   dataStatsRate2.reverse();
-  var ancInterestRateOptions2 = generateChartOptions("Yield Reserves");
+  var ancInterestRateOptions2 = generateChartOptions("Yield Reserves", false);
   var ancInterestRate2 = generateBarChartData(dataStatsDate2, dataStatsRate2);
 
   var dataStatsDate3 = []
@@ -654,7 +715,7 @@ function AnchorPage()
   });
   dataStatsDate3.reverse();
   dataStatsRate3.reverse();
-  var ancInterestRateOptions3 = generateChartOptions("ANC Buyback");
+  var ancInterestRateOptions3 = generateChartOptions("ANC Buyback", false);
   var ancInterestRate3 = generateBarChartData(dataStatsDate3, dataStatsRate3);
 
   var ancbLunaDate = []
@@ -676,8 +737,8 @@ function AnchorPage()
   ancbLunaFinal.push(ancbLunaProvide)
   ancbLunaFinal.push(ancbLunaWithdraw)
   ancbLunaFinal.push(ancbLunaNet)
-  var ancbLunaOptions = generateChartOptions("bLuna Stats");
-  var ancbLunaData = generateBarChartSeriesData(ancbLunaDate, ancbLunaFinal);
+  var ancbLunaOptions = generateChartOptions("bLuna Stats", false);
+  var ancbLunaData = generateBarChartSeriesData(ancbLunaDate, ancbLunaFinal,["Provide","Withdraw","Net"]);
 
   var ancbEthDate = []
   var ancbEthFinal = []
@@ -698,8 +759,8 @@ function AnchorPage()
   ancbEthFinal.push(ancbEthProvide)
   ancbEthFinal.push(ancbEthWithdraw)
   ancbEthFinal.push(ancbEthNet)
-  var ancbEthOptions = generateChartOptions("bEth Stats");
-  var ancbEthData = generateBarChartSeriesData(ancbEthDate, ancbEthFinal);
+  var ancbEthOptions = generateChartOptions("bEth Stats", false);
+  var ancbEthData = generateBarChartSeriesData(ancbEthDate, ancbEthFinal,["Provide","Withdraw","Net"]);
   
   return (
     <>
@@ -728,6 +789,94 @@ function AnchorPage()
         </Grid>
     </Grid>
     </>
+    );
+}
+
+function KnowherePage()
+{
+  const [getVolume,setVolume] = useState("")
+
+  React.useEffect(() => {
+
+    axios.get("/api/getKnowhereTrades").then (response => {
+      setVolume(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
+  },[]);
+
+  if (getVolume === "") return (<div><CircularProgress /></div>);
+
+  var dataDate = []
+  var dataVolume = []
+  var dataCount = []
+  var dataFinal = []
+  var limit=30;
+  getVolume.data.forEach(element => {
+    if (limit > 0)
+    {
+      dataDate.push(element.DATES);
+      dataVolume.push(element.VOLUME_IN_USD);
+      dataCount.push(element.NUMB_OF_TXS);
+      limit -= 1;
+    }
+  });
+  dataFinal.push(dataVolume);
+  dataFinal.push(dataCount);
+  var lunaBurnOptions = generateLRChartOptions("Knowhere Volume");
+  var lunaBurn = generateBarChartLRData(dataDate, dataFinal, ["USD Volume", "Num of NFT Sold"]);
+
+  return (
+    <Grid container spacing={2}>
+        <Grid item md={12}>
+          <Bar md={12} options={lunaBurnOptions} data={lunaBurn} height={null}/>
+        </Grid>
+    </Grid>
+    );
+}
+
+function RandomEarthPage()
+{
+  const [getVolume,setVolume] = useState("")
+
+  React.useEffect(() => {
+
+    axios.get("/api/getRandomEarthTrades").then (response => {
+      setVolume(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
+  },[]);
+
+  if (getVolume === "") return (<div><CircularProgress /></div>);
+
+  var dataDate = []
+  var dataVolume = []
+  var dataCount = []
+  var dataFinal = []
+  var limit=30;
+  getVolume.data.forEach(element => {
+    if (limit > 0)
+    {
+      dataDate.push(element.DATES);
+      dataVolume.push(element.VOLUME_IN_USD);
+      dataCount.push(element.NUMBER_OF_TRANSACTIONS);
+      limit -= 1;
+    }
+  });
+  dataFinal.push(dataVolume);
+  dataFinal.push(dataCount);
+  var lunaBurnOptions = generateLRChartOptions("RandomEarth Volume");
+  var lunaBurn = generateBarChartLRData(dataDate, dataFinal, ["USD Volume", "Num of NFT Sold"]);
+
+  return (
+    <Grid container spacing={2}>
+        <Grid item md={12}>
+          <Bar md={12} options={lunaBurnOptions} data={lunaBurn} height={null}/>
+        </Grid>
+    </Grid>
     );
 }
 
@@ -803,6 +952,8 @@ function PermanentDrawerLeft() {
               [
                 'Anchor'
                 ,'Mirror'
+                ,'Knowhere'
+                ,'RandomEarth'
               ].sort().map( n => {
                 return (
                   <ListItem button key={n} onClick={() => setPage(n)}>
@@ -820,7 +971,6 @@ function PermanentDrawerLeft() {
               'Astroport'
               ,'Loop'
               ,'TerraSwap'
-              ,'RandomEarth'
               ,'Luart'
               ,'Talis'
               ,'OnePlanet'
