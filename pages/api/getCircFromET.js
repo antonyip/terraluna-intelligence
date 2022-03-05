@@ -1,0 +1,19 @@
+// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import axios from 'axios'
+
+export default async function handler(req, res) {
+    let returnValue = "";
+    let returnStatus = 200;
+    
+    const { denom } = req.query;
+    await axios.get('https://api.extraterrestrial.money/v1/api/supply?denom='+denom).then(reply => {
+        returnValue = reply.data;
+        
+    }).catch(err => {
+        returnValue = { error: err }
+        returnStatus = 400;
+    })
+
+    res.status(returnStatus).json(returnValue)
+  }
+  
