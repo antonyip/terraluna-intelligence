@@ -1,6 +1,6 @@
 {
-  "name": "sol_nft_dashboard",
-  "version": "0.1.0",
+  "name": "Terra-Luna Intelligence",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

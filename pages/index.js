@@ -103,10 +103,10 @@ const AppBar = styled(MuiAppBar, {
 
 function AboutPage()
 {
-  return (<div><Card><CardHeader title="Solana NFT Dashboard"></CardHeader>
+  return (<div><Card><CardHeader title="Luna Intelligence Dashboard"></CardHeader>
     <CardContent>
-      <p>Bounty Description - <a target="_blank" rel="noreferrer" href='https://flipsidecrypto.xyz/drops/3adspO7EM1pL89AKI5hbTD'>https://flipsidecrypto.xyz/drops/3adspO7EM1pL89AKI5hbTD</a></p>
-      <p>This dashboard shows the Sales of the NFT projects on the various Solana NFT Marketplaces. Feel free to explore the data!</p>
+      <p>Bounty Description - <a target="_blank" rel="noreferrer" href='https://flipsidecrypto.xyz/drops/mqPbAB6CQHUSDlV7AsVsU'>https://flipsidecrypto.xyz/drops/mqPbAB6CQHUSDlV7AsVsU</a></p>
+      <p>This dashboard attempts to capture all sorts of data related to Terra-Luna.  Feel free to explore the data!</p>
       
       <a target="_blank" rel="noreferrer" href='https://flipsidecrypto.xyz'><Image alt="" height={40} width={264} src="/powered.png"></Image></a>
     </CardContent>
@@ -195,19 +195,19 @@ function generateLunaPriceChartData(xValues, yValues, y1, y2) {
         type: 'line',
         label: 'Max',
         data: y1,
-        backgroundColor: '#668AC5'
+        backgroundColor: colors[2]
       },
       {
         type: 'line',
         label: 'Min',
         data: y2,
-        backgroundColor: '#268AC5'
+        backgroundColor: colors[4]
       },
       {
         type: 'bar',
         label: 'Avg',
         data: yValues,
-        backgroundColor: '#E68AC5'
+        backgroundColor: colors[8]
       },
     ],
   };
@@ -220,9 +220,26 @@ function generateBarChartData(xValues, yValues) {
       {
         type: 'bar',
         data: yValues,
-        backgroundColor: '#E68AC5'
-      },
+        backgroundColor: colors[0]
+      }
     ],
+  };
+}
+
+function generateBarChartSeriesData(xValues, yValues) {
+    var localDataset = []
+    yValues.forEach(element => {
+      localDataset.push({
+        type: 'bar',
+        data: element,
+        backgroundColor: colors[0]
+      })
+    });
+    console.log(localDataset[localDataset.length-1]);
+    localDataset[localDataset.length-1]["type"] = 'line';
+  return {
+    labels: xValues,
+    datasets: localDataset,
   };
 }
 
@@ -233,7 +250,7 @@ function generatePieChartData(xValues, yValues) {
       {
         type: 'pie',
         data: yValues,
-        backgroundColor: colors
+        backgroundColor: colors[0]
       },
     ],
   };
@@ -544,6 +561,8 @@ function CW20Page()
 function AnchorPage()
 {
   const [getData,setData] = useState("")
+  const [getDataStats,setDataStats] = useState("")
+  const [getAncFlows,setAncFlows] = useState("")
   
   React.useEffect(() => {
 
@@ -553,36 +572,159 @@ function AnchorPage()
       console.log(error);
     })
 
+    axios.get("/api/getAncStats").then (response => {
+      setDataStats(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
+    axios.get("/api/getAncFlows").then (response => {
+      setAncFlows(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
   },[]);
 
   if (getData === "") return (<div><CircularProgress /></div>);
-
-  var dataLunaDate = []
-  var dataLunaBurn = []
+  if (getDataStats === "") return (<div><CircularProgress /></div>);
+  if (getAncFlows === "") return (<div><CircularProgress /></div>);
+  
+  var dataDate = []
+  var dataBorrow = []
+  var dataRepay = []
+  var dataNet = []
+  var dataFinal = []
   getData.data.forEach(element => {
-    dataLunaDate.push(element.DAY_DATE.substr(0,10));
-    dataLunaBurn.push(element.AMOUNT_BORROWED);
+    dataDate.push(element.DAY_DATE.substr(0,10));
+    dataBorrow.push(element.AMOUNT_BORROWED);
+    dataRepay.push(-element.AMOUNT_REPAYED);
+    dataNet.push(element.AMOUNT_BORROWED - element.AMOUNT_REPAYED);
   });
-  var lunaBurnOptions = generateChartOptions("ANC Amount Borrowed");
-  var lunaBurn = generateBarChartData(dataLunaDate, dataLunaBurn);
+  dataFinal.push(dataDate);
+  dataFinal.push(dataBorrow);
+  dataFinal.push(dataRepay);
+  dataFinal.push(dataNet);
+  var USTBurnOptions = generateChartOptions("UST Amount Flows");
+  var USTBurn = generateBarChartSeriesData(dataDate, dataFinal);
 
-  var dataUSTDate = []
-  var dataUSTBurn = []
-  getData.data.forEach(element => {
-    dataUSTDate.push(element.DAY_DATE.substr(0,10));
-    dataUSTBurn.push(element.AMOUNT_REPAYED);
+
+  var dataStatsDate = []
+  var dataStatsRate = []
+  var limit = 30;
+  getDataStats.data.forEach(element => {
+    if (limit > 0)
+    {
+      dataStatsDate.push(element.DATE_H);
+      dataStatsRate.push(element.ANC_EMISSION_RATE);
+      limit -= 1;
+    }
   });
-  var USTBurnOptions = generateChartOptions("ANC Amount Repayed");
-  var USTBurn = generateBarChartData(dataUSTDate, dataUSTBurn);
+  dataStatsDate.reverse();
+  dataStatsRate.reverse();
+  var ancInterestRateOptions = generateChartOptions("ANC Interest Rate");
+  var ancInterestRate = generateBarChartData(dataStatsDate, dataStatsRate);
 
+  var dataStatsDate2 = []
+  var dataStatsRate2 = []
+  var limit = 30;
+  getDataStats.data.forEach(element => {
+    if (limit > 0)
+    {
+      dataStatsDate2.push(element.DATE_H);
+      dataStatsRate2.push(element.YIELD_RESERVES);
+      limit -= 1;
+    }
+  });
+  dataStatsDate2.reverse();
+  dataStatsRate2.reverse();
+  var ancInterestRateOptions2 = generateChartOptions("Yield Reserves");
+  var ancInterestRate2 = generateBarChartData(dataStatsDate2, dataStatsRate2);
+
+  var dataStatsDate3 = []
+  var dataStatsRate3 = []
+  var limit = 30;
+  getDataStats.data.forEach(element => {
+    if (limit > 0)
+    {
+      dataStatsDate3.push(element.DATE_H);
+      dataStatsRate3.push(element.ANC_PURCHASE_AMOUNT);
+      limit -= 1;
+    }
+  });
+  dataStatsDate3.reverse();
+  dataStatsRate3.reverse();
+  var ancInterestRateOptions3 = generateChartOptions("ANC Buyback");
+  var ancInterestRate3 = generateBarChartData(dataStatsDate3, dataStatsRate3);
+
+  var ancbLunaDate = []
+  var ancbLunaFinal = []
+  var ancbLunaProvide = []
+  var ancbLunaWithdraw = []
+  var ancbLunaNet = []
+  var limit = 30;
+  getAncFlows.data.forEach(element => {
+    if (limit > 0)
+    {
+      ancbLunaDate.push(element.DAY_DATE.substr(0,10));
+      ancbLunaProvide.push(element.PROVIDE_BLUNA);
+      ancbLunaWithdraw.push(-element.WITHDRAW_BLUNA);
+      ancbLunaNet.push(element.PROVIDE_BLUNA-element.WITHDRAW_BLUNA);
+      limit -= 1;
+    }
+  });
+  ancbLunaFinal.push(ancbLunaProvide)
+  ancbLunaFinal.push(ancbLunaWithdraw)
+  ancbLunaFinal.push(ancbLunaNet)
+  var ancbLunaOptions = generateChartOptions("bLuna Stats");
+  var ancbLunaData = generateBarChartSeriesData(ancbLunaDate, ancbLunaFinal);
+
+  var ancbEthDate = []
+  var ancbEthFinal = []
+  var ancbEthProvide = []
+  var ancbEthWithdraw = []
+  var ancbEthNet = []
+  limit = 30;
+  getAncFlows.data.forEach(element => {
+    if (limit > 0)
+    {
+      ancbEthDate.push(element.DAY_DATE.substr(0,10));
+      ancbEthProvide.push(element.PROVIDE_BETH);
+      ancbEthWithdraw.push(-element.WITHDRAW_BETH);
+      ancbEthNet.push(element.PROVIDE_BETH-element.WITHDRAW_BETH);
+      limit -= 1;
+    }
+  });
+  ancbEthFinal.push(ancbEthProvide)
+  ancbEthFinal.push(ancbEthWithdraw)
+  ancbEthFinal.push(ancbEthNet)
+  var ancbEthOptions = generateChartOptions("bEth Stats");
+  var ancbEthData = generateBarChartSeriesData(ancbEthDate, ancbEthFinal);
+  
   return (
     <>
     <Grid container spacing={2}>
+        <Grid item md={12}>
+          <Bar options={USTBurnOptions} data={USTBurn} height={null}/>
+        </Grid>
+    </Grid>
+    <Grid container spacing={2}>
+        <Grid item md={4}>
+          <Bar options={ancInterestRateOptions} data={ancInterestRate} height={null}/>
+        </Grid>
+        <Grid item md={4}>
+          <Bar options={ancInterestRateOptions2} data={ancInterestRate2} height={null}/>
+        </Grid>
+        <Grid item md={4}>
+          <Bar options={ancInterestRateOptions3} data={ancInterestRate3} height={null}/>
+        </Grid>
+    </Grid>
+    <Grid container spacing={2}>
         <Grid item md={6}>
-          <Bar md={6} options={lunaBurnOptions} data={lunaBurn} height={null}/>
+          <Bar options={ancbLunaOptions} data={ancbLunaData} height={null}/>
         </Grid>
         <Grid item md={6}>
-          <Bar md={6} options={USTBurnOptions} data={USTBurn} height={null}/>
+          <Bar options={ancbEthOptions} data={ancbEthData} height={null}/>
         </Grid>
     </Grid>
     </>
@@ -656,13 +798,27 @@ function PermanentDrawerLeft() {
               </ListItemIcon>
               <ListItemText primary={'NFTs'} />
             </ListItem>
-
             <Divider></Divider>
             {
-              ['Anchor'
-              ,'Astroport'
+              [
+                'Anchor'
+                ,'Mirror'
+              ].sort().map( n => {
+                return (
+                  <ListItem button key={n} onClick={() => setPage(n)}>
+                    <ListItemIcon>
+                    <Image alt="" src='/luna.png' height={24} width={24} />
+                    </ListItemIcon>
+                    <ListItemText primary={n} />
+                  </ListItem>
+                );
+            })
+            }
+            <Divider></Divider>
+            {
+              [
+              'Astroport'
               ,'Loop'
-              ,'Mirror'
               ,'TerraSwap'
               ,'RandomEarth'
               ,'Luart'
@@ -691,7 +847,7 @@ function PermanentDrawerLeft() {
                 return (
                   <ListItem button key={n} onClick={() => setPage(n)}>
                     <ListItemIcon>
-                    <Image alt="" src='/luna.png' height={24} width={24} />
+                    <Image alt="" src='/x.png' height={24} width={24} />
                     </ListItemIcon>
                     <ListItemText primary={n} />
                   </ListItem>
