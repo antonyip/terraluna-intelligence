@@ -250,7 +250,7 @@ function generatePieChartData(xValues, yValues) {
       {
         type: 'pie',
         data: yValues,
-        backgroundColor: colors[0]
+        backgroundColor: colors
       },
     ],
   };
@@ -315,7 +315,7 @@ function BlockchainStatsPage()
     dataLunaPriceMin.push(d.MINLUNA);
     dataLunaPriceMax.push(d.MAXLUNA);
   })
-  var lunaPriceOptions = generateChartOptions("Luna Price");
+  var lunaPriceOptions = generateChartOptions("Daily Luna Price");
   var lunaPrice = generateLunaPriceChartData(dataLunaPriceDate, dataLunaPrice, dataLunaPriceMin, dataLunaPriceMax);
 
   var dataTxsDate = []
@@ -324,7 +324,7 @@ function BlockchainStatsPage()
     dataTxsDate.push(d.DAY_DATE.substr(0,10));
     dataTxs.push(d.NUM_TXS);
   })
-  var lunaTxsOptions = generateChartOptions("Number of Transactions (TerraLuna Module Interactions)");
+  var lunaTxsOptions = generateChartOptions("Daily Number of Transactions (TerraLuna Module Interactions)");
   var lunaTxs = generateBarChartData(dataTxsDate, dataTxs);
 
   var dataMsgDate = []
@@ -333,7 +333,7 @@ function BlockchainStatsPage()
     dataMsgDate.push(d.DAY_DATE.substr(0,10));
     dataMsg.push(d.NUM_TXS);
   })
-  var lunaMsgOptions = generateChartOptions("Number of Msgs (Smart Contract Interactions)");
+  var lunaMsgOptions = generateChartOptions("Daily Number of Msgs (Smart Contract Interactions)");
   var lunaMsg = generateBarChartData(dataMsgDate, dataMsg);
 
   var dataVoteDate = []
@@ -344,7 +344,7 @@ function BlockchainStatsPage()
     dataVote.push(d.TOTAL_VOTING_POWER);
   })
 
-  var lunaVoteOptions = generateChartOptions("Voting Power");
+  var lunaVoteOptions = generateChartOptions("Daily Total Voting Power");
   var lunaVote = generateBarChartData(dataVoteDate, dataVote);
 
   var dataBreakdownName = []
@@ -354,7 +354,7 @@ function BlockchainStatsPage()
     dataBreakdown.push(d.AVG_SUM_LUNA);
   })
 
-  var lunaBreakdownOptions = generateChartOptions("Luna Distribution");
+  var lunaBreakdownOptions = generateChartOptions("Current Luna Distribution");
   var lunaBreakdown = generatePieChartData(dataBreakdownName, dataBreakdown);
 
   return (
