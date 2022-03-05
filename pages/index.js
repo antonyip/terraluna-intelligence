@@ -124,6 +124,9 @@ function Pages(props) {
   if (props.pageNumber === 'Anchor') {return (<div><AnchorPage /></div>);}
   if (props.pageNumber === 'Knowhere') {return (<div><KnowherePage /></div>);}
   if (props.pageNumber === 'RandomEarth') {return (<div><RandomEarthPage /></div>);}
+  if (props.pageNumber === 'Mirror') {return (<div><MirrorPage /></div>);}
+  if (props.pageNumber === 'Angel (Halo)') {return (<div><AngelPage /></div>);}
+  
   
   return (
     <Typography paragraph>
@@ -439,6 +442,27 @@ function BlockchainStatsPage()
 
     </Grid>);
 }
+
+function MirrorPage()
+{
+  return (
+    <>
+    <Card><CardHeader title="TODO: Integrate all the charts natively" /></Card>
+      <iframe src='https://app.flipsidecrypto.com/dashboard/mirror-tvl-and-swap-volume-qB7esg' width="100%" height="600vh"/>
+    </>
+  )
+}
+
+function AngelPage()
+{
+  return (
+    <>
+    <Card><CardHeader title="TODO: Integrate all the charts natively" /></Card>
+      <iframe src='https://app.flipsidecrypto.com/dashboard/angel-protocol-delegations-wj-9hn' width="100%" height="600vh"/>
+    </>
+  )
+}
+
 
 function ET_Circulation()
 {
@@ -943,7 +967,7 @@ function PermanentDrawerLeft() {
             </ListItem>
             <ListItem button key={'NFTs'} onClick={() => setPage(4)}>
               <ListItemIcon>
-              <Image alt="" src='/luna.png' height={24} width={24} />
+              <Image alt="" src='/x.png' height={24} width={24} />
               </ListItemIcon>
               <ListItemText primary={'NFTs'} />
             </ListItem>
@@ -954,6 +978,7 @@ function PermanentDrawerLeft() {
                 ,'Mirror'
                 ,'Knowhere'
                 ,'RandomEarth'
+                ,'Angel (Halo)'
               ].sort().map( n => {
                 return (
                   <ListItem button key={n} onClick={() => setPage(n)}>
@@ -984,7 +1009,6 @@ function PermanentDrawerLeft() {
               ,'Orion'
               ,'Spectrum'
               ,'Glow'
-              ,'Angel (HALO)'
               ,'Alte'
               ,'Loterra'
               ,'Terra World Token'
