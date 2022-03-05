@@ -23,7 +23,7 @@ import Image from 'next/image';
 import axios from 'axios';
 import CircularProgress from '@mui/material/CircularProgress'
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { DateRange, Power } from '@mui/icons-material';
+import { ConstructionOutlined, DateRange, Power } from '@mui/icons-material';
 import Grid from '@mui/material/Grid';
 import date from 'date-and-time';
 import Paper from '@mui/material/Paper';
@@ -110,10 +110,13 @@ function AboutPage()
 
 function Pages(props) {
 
+  console.log(props.pageNumber);
   if(props.pageNumber === 0) {return (<div><AboutPage /></div>);}
   if(props.pageNumber === 1) {return (<div><BlockchainStatsPage /></div>);}
   if(props.pageNumber === 2) {return (<div><StableCoinPage /></div>);}
   if(props.pageNumber === 3) {return (<div><CW20Page /></div>);}
+  
+  if (props.pageNumber === 'Anchor') {return (<div><AnchorPage /></div>);}
   return (
     <Typography paragraph>
       <h2> Sorry, page not done yet </h2>
@@ -532,6 +535,54 @@ function CW20Page()
     );
 }
 
+function AnchorPage()
+{
+  const [getData,setData] = useState("")
+  
+  React.useEffect(() => {
+
+    axios.get("/api/getAncDailyDeals").then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
+  },[]);
+
+  if (getData === "") return (<div><CircularProgress /></div>);
+
+  var dataLunaDate = []
+  var dataLunaBurn = []
+  getData.data.forEach(element => {
+    dataLunaDate.push(element.DAY_DATE.substr(0,10));
+    dataLunaBurn.push(element.AMOUNT_BORROWED);
+  });
+  var lunaBurnOptions = generateChartOptions("ANC Amount Borrowed");
+  var lunaBurn = generateBarChartData(dataLunaDate, dataLunaBurn);
+
+  var dataUSTDate = []
+  var dataUSTBurn = []
+  getData.data.forEach(element => {
+    dataUSTDate.push(element.DAY_DATE.substr(0,10));
+    dataUSTBurn.push(element.AMOUNT_REPAYED);
+  });
+  var USTBurnOptions = generateChartOptions("ANC Amount Repayed");
+  var USTBurn = generateBarChartData(dataUSTDate, dataUSTBurn);
+
+  return (
+    <>
+    <Grid container spacing={2}>
+        <Grid item md={6}>
+          <Bar md={6} options={lunaBurnOptions} data={lunaBurn} height={null}/>
+        </Grid>
+        <Grid item md={6}>
+          <Bar md={6} options={USTBurnOptions} data={USTBurn} height={null}/>
+        </Grid>
+    </Grid>
+    </>
+    );
+}
+
 //---------------------- Main Pages
 function PermanentDrawerLeft() {
   const [page, setPage] = useState(0);
@@ -632,7 +683,7 @@ function PermanentDrawerLeft() {
               ,'Messier.art'
               ].sort().map( n => {
                 return (
-                  <ListItem button key={n} onClick={() => setPage({n})}>
+                  <ListItem button key={n} onClick={() => setPage(n)}>
                     <ListItemIcon>
                     <Image alt="" src='/luna.png' height={24} width={24} />
                     </ListItemIcon>
