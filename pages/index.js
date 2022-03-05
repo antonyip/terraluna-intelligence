@@ -515,9 +515,9 @@ function CW20Page()
   */
 
 
-  for (var key in getPrices.data.prices)
+  for (var mykey in getPrices.data.prices)
   {
-    dataLunaName.push([getPrices.data.prices[key].symbol, Math.round(getPrices.data.prices[key].price*1000) / 1000]);
+    dataLunaName.push([getPrices.data.prices[mykey].symbol, Math.round(getPrices.data.prices[mykey].price*1000) / 1000]);
   }
   //var lunaBurnOptions = generateChartOptions("CW20 Market Caps");
   //var lunaBurn = generateBarChartData(dataLunaName, dataLunaPrice);
