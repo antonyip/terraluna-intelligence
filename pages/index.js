@@ -506,7 +506,7 @@ function CW20Page()
   var dataLunaName = []
   var dataLunaPrice = []
 
-  console.log(getPrices.data.prices);
+  //console.log(getPrices.data.prices);
   /*
   getPrices.data.prices.forEach(element => {
     dataLunaName.push(element.symbol);
@@ -524,9 +524,10 @@ function CW20Page()
 
   return (
     <Grid container spacing={2}>
-      {dataLunaName.map(e => {
+      {
+      dataLunaName.map(e => {
         return (
-          <Grid item md={3}>
+          <Grid item md={3} key={e[0]}>
             {e[0] + " " + e[1]}
           </Grid>
         )
