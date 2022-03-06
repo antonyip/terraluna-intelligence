@@ -120,6 +120,8 @@ function Pages(props) {
   if(props.pageNumber === 1) {return (<div><BlockchainStatsPage /></div>);}
   if(props.pageNumber === 2) {return (<div><StableCoinPage /></div>);}
   if(props.pageNumber === 3) {return (<div><CW20Page /></div>);}
+  if(props.pageNumber === 5) {return (<div><BridgePage /></div>);}
+  
   if(props.pageNumber === 8) {return (<div><FreeWillyPage /></div>);}
   
   if (props.pageNumber === 'Anchor') {return (<div><AnchorPage /></div>);}
@@ -336,7 +338,7 @@ function LazyChartOne(props)
   },[]);
 
   if (getData === "") return (<div><CircularProgress /></div>);
-
+  //console.log(getData);
   var xValues = []
   var yValues = []
   getData.data.forEach( d => {
@@ -523,7 +525,7 @@ function BlockchainStatsPage()
           <Bar md={6} options={lunaGasOptions} data={lunaGasData} height={null}/>
         </Grid>
         <Grid item md={6}>
-          <LazyChartOne url="/api/getLunaMarketSwaps" xKey="DAY_DATE" yKey="SUM_USD" title="Luna Market Swaps" showLabels={false}/>
+          <LazyChartOne url="/api/getLunaMarketSwaps" xKey="DAY_DATE" yKey="SUM_USD" title="Luna Market Swaps (USD Volume)" showLabels={false}/>
         </Grid>
         
     </Grid>);
@@ -531,11 +533,40 @@ function BlockchainStatsPage()
 
 function MirrorPage()
 {
+  // Resource - https://app.flipsidecrypto.com/dashboard/mirror-tvl-and-swap-volume-qB7esg 
+  
+/*
   return (
     <>
     <Card><CardHeader title="TODO: Integrate all the charts natively" /></Card>
       <iframe src='https://app.flipsidecrypto.com/dashboard/mirror-tvl-and-swap-volume-qB7esg' width="100%" height="600vh"/>
     </>
+  )
+*/
+return (
+  <Grid container spacing={2}>
+    <Grid item md={6}>
+      <LazyChartOne url="/api/getMirrorTVL" xKey="DAY_DATE" yKey="TVL" title="Mirror TVL (Total Value Locked in USD)" showLabels={false}/>
+    </Grid>
+    <Grid item md={6}>
+      <LazyChartOne url="/api/getMirrorSwapVolume" xKey="DAY_DATE" yKey="SWAP_VOLUME" title="Mirror Activity (Swap Volume in USD)" showLabels={false}/>
+    </Grid>
+  </Grid>
+)
+
+}
+
+function BridgePage()
+{
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getWormholeBridgeTx" xKey="DATE" yKey="TX_COUNT" title="Wormhole TX Count" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getTerraBridgeTx" xKey="DATE" yKey="TX_COUNT" title="Terra Bridge TX Count" showLabels={false}/>
+      </Grid>
+    </Grid>
   )
 }
 
@@ -1096,15 +1127,15 @@ function PermanentDrawerLeft() {
               </ListItemIcon>
               <ListItemText primary={'CW20 Tokens'} />
             </ListItem>
-            <ListItem button key={'Market Flow'} onClick={() => setPage(5)}>
+            <ListItem button key={'Market Flow'} onClick={() => setPage(4)}>
               <ListItemIcon>
               <Image alt="" src='/x.png' height={24} width={24} />
               </ListItemIcon>
               <ListItemText primary={'Market Flow'} />
             </ListItem>
-            <ListItem button key={'Bridges'} onClick={() => setPage(6)}>
+            <ListItem button key={'Bridges'} onClick={() => setPage(5)}>
               <ListItemIcon>
-              <Image alt="" src='/x.png' height={24} width={24} />
+              <Image alt="" src='/luna.png' height={24} width={24} />
               </ListItemIcon>
               <ListItemText primary={'Bridges'} />
             </ListItem>
@@ -1123,18 +1154,18 @@ function PermanentDrawerLeft() {
             <Divider></Divider>
             {
               [
-                'Anchor'
-                ,'Mirror'
-                ,'Knowhere'
-                ,'RandomEarth'
-                ,'Angel (Halo)'
+                ['Anchor','/anchor.png']
+                ,['Mirror',"/mirror.png"]
+                ,['Knowhere','/luna.png'] 
+                ,['RandomEarth','/RE.png']
+                ,['Angel (Halo)','/HALO60.png']
               ].sort().map( n => {
                 return (
-                  <ListItem button key={n} onClick={() => setPage(n)}>
+                  <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
                     <ListItemIcon>
-                    <Image alt="" src='/luna.png' height={24} width={24} />
+                    <Image alt="" src={n[1]} height={24} width={24} />
                     </ListItemIcon>
-                    <ListItemText primary={n} />
+                    <ListItemText primary={n[0]} />
                   </ListItem>
                 );
             })
@@ -1159,6 +1190,8 @@ function PermanentDrawerLeft() {
               ,'Spectrum'
               ,'Glow'
               ,'Alte'
+              ,'Kujira'
+              ,'Levana'
               ,'Loterra'
               ,'Terra World Token'
               ,'Playnity'
