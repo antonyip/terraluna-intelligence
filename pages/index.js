@@ -632,7 +632,7 @@ function MirrorPage()
 return (
   <Grid container spacing={2}>
     <Grid item md={6}>
-      <LazyChartETPrice url="/api/getETPricesHourly" token="MIR" itle="Mirror Token Price" showLabels={false}/>
+      <LazyChartETPrice url="/api/getETPricesHourly" token="MIR" title="Mirror Token Price" showLabels={false}/>
     </Grid>
     <Grid item md={6}>
       <LazyChartOne url="/api/getMirrorTVL" xKey="DAY_DATE" yKey="TVL" title="Mirror TVL (Total Value Locked in USD)" showLabels={false}/>
