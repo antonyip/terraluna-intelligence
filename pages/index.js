@@ -412,6 +412,39 @@ function LazyChartCoinGecko(props)
   return <Bar md={6} options={chartOptions} data={chartData} height={null}/>
 }
 
+function LazyChartETPrice(props)
+{
+  const { url, token, title } = props;
+  const [getData, setData] = useState("")
+
+  React.useEffect(() => {
+    axios.get(url).then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+  },[]);
+
+  if (getData === "") return (<div><CircularProgress /></div>);
+
+  console.log(getData);
+
+  var xValues = []
+  var yValues = []
+  getData.data.prices[token].forEach( d => {
+    xValues.push(new Date(d[0]*1000).toISOString().substring(0,10));
+    yValues.push(d[1]);
+  })
+
+  xValues = xValues.slice(-30);
+  yValues = yValues.slice(-30);
+
+  var chartOptions = generateChartOptions(title, false);
+  var chartData = generateBarChartData(xValues, yValues);
+  
+  return <Bar options={chartOptions} data={chartData} height={null}/>
+}
+
 function LazyTable(props)
 {
   const { url, fields } = props;
@@ -599,6 +632,9 @@ function MirrorPage()
 return (
   <Grid container spacing={2}>
     <Grid item md={6}>
+      <LazyChartETPrice url="/api/getETPricesHourly" token="MIR" itle="Mirror Token Price" showLabels={false}/>
+    </Grid>
+    <Grid item md={6}>
       <LazyChartOne url="/api/getMirrorTVL" xKey="DAY_DATE" yKey="TVL" title="Mirror TVL (Total Value Locked in USD)" showLabels={false}/>
     </Grid>
     <Grid item md={6}>
@@ -660,11 +696,11 @@ function AngelPage()
   */
   return (
     <Grid container spacing={2}>
-      <Grid item md={8}>
-        <LazyChartOne url="/api/getAngelDelegations" xKey="DAY_DATE" yKey="DAILY_LUNA" title="Angel Delegations" showLabels={false}/>
+      <Grid item md={6}>
+        <LazyChartETPrice url="/api/getETPricesHourly" token="HALO" title="Angel Token Price" showLabels={false}/>
       </Grid>
-      <Grid item md={8}>
-        <LazyChartCoinGecko url="/api/getCoinGeckoPrice/?currency=spectrum-token" title="Spec Token Price" showLabels={false}/>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getAngelDelegations" xKey="DAY_DATE" yKey="DAILY_LUNA" title="Angel Delegations" showLabels={false}/>
       </Grid>
     </Grid>
   )
@@ -696,13 +732,13 @@ function ET_Circulation()
 
   React.useEffect(() => {
 
-    axios.get("/api/getCircFromET?denom=uluna").then (response => {
+    axios.get("/api/getETTokenCirc?denom=uluna").then (response => {
       setLunaPrice(response);
     }).catch (error => {
       console.log(error);
     })
 
-    axios.get("/api/getCircFromET?denom=uusd").then (response => {
+    axios.get("/api/getETTokenCirc?denom=uusd").then (response => {
       setUSTPrice(response);
     }).catch (error => {
       console.log(error);
@@ -899,11 +935,37 @@ function FreeWillyPage()
   if (getDataLUNA === "") return (<div><CircularProgress /></div>);
 
   console.log(getData.data);
-  console.log(getDataETH.data);
-  console.log(getDataLUNA.data);
-  return (<div>
-    In progress.. :P
-  </div>)
+  //console.log(getDataETH.data);
+  //console.log(getDataLUNA.data);
+
+  var dETHxAxis = []
+  var dETHyAxis = []
+  getDataETH.data.query_result.bid_pools.forEach(e => {
+    dETHxAxis.push(e.premium_rate);
+    dETHyAxis.push(e.total_bid_amount / 10**9);
+  })
+  var c1o = generateChartOptions("bETH Bidding Volumes", false);
+  var c1d = generateBarChartData(dETHxAxis, dETHyAxis);
+
+  var dLUNAxAxis = []
+  var dLUNAyAxis = []
+  getDataLUNA.data.query_result.bid_pools.forEach(e => {
+    dLUNAxAxis.push(e.premium_rate);
+    dLUNAyAxis.push(e.total_bid_amount / 10**9);
+  })
+  var c2o = generateChartOptions("bLUNA Bidding Volumes", false);
+  var c2d = generateBarChartData(dLUNAxAxis, dLUNAyAxis);
+
+  return (
+    <Grid container spacing={2}>
+    <Grid item md={6}>
+      <Bar options={c1o} data={c1d} height={null}/>
+    </Grid>
+    <Grid item md={6}>
+      <Bar options={c2o} data={c2d} height={null}/>
+    </Grid>
+    </Grid>
+  )
 }
 
 function AnchorPage()
