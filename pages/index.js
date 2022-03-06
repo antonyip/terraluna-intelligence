@@ -301,7 +301,7 @@ function generateBarChartSeriesData(xValues, yValues, labels) {
         backgroundColor: colors[index]
       })
     });
-    console.log(localDataset[localDataset.length-1]);
+    
     localDataset[localDataset.length-1]["type"] = 'line';
   return {
     labels: xValues,
@@ -322,6 +322,64 @@ function generatePieChartData(xValues, yValues) {
   };
 }
 
+function LazyChartOne(props)
+{
+  const { url, xKey, yKey, title, showLabels } = props;
+  const [getData, setData] = useState("")
+
+  React.useEffect(() => {
+    axios.get(url).then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+  },[]);
+
+  if (getData === "") return (<div><CircularProgress /></div>);
+
+  var xValues = []
+  var yValues = []
+  getData.data.forEach( d => {
+    xValues.push(d[xKey]);
+    yValues.push(d[yKey]);
+  })
+
+  var chartOptions = generateChartOptions(title, showLabels);
+  var chartData = generateBarChartData(xValues, yValues);
+  
+  return <Bar md={6} options={chartOptions} data={chartData} height={null}/>
+}
+
+function LazyChartCoinGecko(props)
+{
+  const { url, xKey, yKey, title, showLabels } = props;
+  const [getData, setData] = useState("")
+
+  React.useEffect(() => {
+    axios.get(url).then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+  },[]);
+
+  if (getData === "") return (<div><CircularProgress /></div>);
+
+  console.log(getData);
+
+  var xValues = []
+  var yValues = []
+  getData.data.prices.forEach( d => {
+    xValues.push(new Date(d[0]).toISOString().substring(0,10));
+    yValues.push(d[1]);
+  })
+
+  var chartOptions = generateChartOptions(title, showLabels);
+  var chartData = generateBarChartData(xValues, yValues);
+  
+  return <Bar md={6} options={chartOptions} data={chartData} height={null}/>
+}
+
 //---------------------- Sub Pages
 function BlockchainStatsPage()
 {
@@ -330,6 +388,7 @@ function BlockchainStatsPage()
   const [getLunaMsgCount,setLunaMsgCount] = useState("")
   const [getLunaValidatorVotingPower,setLunaValidatorVotingPower] = useState("")
   const [getLunaBreakdown,setLunaBreakdown] = useState("")
+  const [getLunaGas,setLunaGas] = useState("")
   
   React.useEffect(() => {
 
@@ -363,6 +422,12 @@ function BlockchainStatsPage()
       console.log(error);
     })
 
+    axios.get("/api/getLunaGasUsage").then (response => {
+      setLunaGas(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
   },[])
 
   if (getLunaPrice === "") return (<div><CircularProgress /></div>);
@@ -370,6 +435,7 @@ function BlockchainStatsPage()
   if (getLunaMsgCount === "") return (<div><CircularProgress /></div>);
   if (getLunaValidatorVotingPower === "") return (<div><CircularProgress /></div>);
   if (getLunaBreakdown === "") return (<div><CircularProgress /></div>);
+  if (getLunaGas === "") return (<div><CircularProgress /></div>);
 
   var dataLunaPriceDate = []
   var dataLunaPrice = []
@@ -423,6 +489,19 @@ function BlockchainStatsPage()
   var lunaBreakdownOptions = generateChartOptions("Current Luna Distribution", false);
   var lunaBreakdown = generatePieChartData(dataBreakdownName, dataBreakdown);
 
+  var dataLunaGasDate = []
+  var dataLunaGas = []
+  getLunaGas.data.forEach( d => {
+    dataLunaGasDate.push(d.DAY_DATE.substr(0,10));
+    dataLunaGas.push(d.SUM_GAS_USED);
+  })
+
+  var lunaGasOptions = generateChartOptions("Daily Luna Gas Usage", false);
+  var lunaGasData = generateBarChartData(dataLunaGasDate, dataLunaGas);
+
+
+  https://api.flipsidecrypto.com/api/v2/queries/29481f97-b3bc-4c6c-8f49-fc94478b275b/data/latest
+
   return (
     <Grid container spacing={2}>
         <Grid item md={6}>
@@ -440,7 +519,13 @@ function BlockchainStatsPage()
         <Grid item md={6}>
           <Bar md={6} options={lunaVoteOptions} data={lunaVote} height={null}/>
         </Grid>
-
+        <Grid item md={6}>
+          <Bar md={6} options={lunaGasOptions} data={lunaGasData} height={null}/>
+        </Grid>
+        <Grid item md={6}>
+          <LazyChartOne url="/api/getLunaMarketSwaps" xKey="DAY_DATE" yKey="SUM_USD" title="Luna Market Swaps" showLabels={false}/>
+        </Grid>
+        
     </Grid>);
 }
 
@@ -832,7 +917,10 @@ function AnchorPage()
   return (
     <>
     <Grid container spacing={2}>
-        <Grid item md={12}>
+        <Grid item md={6}>
+          <LazyChartCoinGecko url="/api/getAncPrice"  title="Anchor Price (USD)" showLabels={false}/>
+        </Grid>
+        <Grid item md={6}>
           <Bar options={USTBurnOptions} data={USTBurn} height={null}/>
         </Grid>
     </Grid>
