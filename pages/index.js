@@ -107,8 +107,8 @@ function AboutPage()
     <CardContent>
       <p>Bounty Description - <a target="_blank" rel="noreferrer" href='https://flipsidecrypto.xyz/drops/mqPbAB6CQHUSDlV7AsVsU'>https://flipsidecrypto.xyz/drops/mqPbAB6CQHUSDlV7AsVsU</a></p>
       <p>This dashboard attempts to capture all sorts of data related to Terra-Luna.  Feel free to explore the data!</p>
-      
       <a target="_blank" rel="noreferrer" href='https://flipsidecrypto.xyz'><Image alt="" height={40} width={264} src="/powered.png"></Image></a>
+      <p>Feel free to request for more types of analytics here - <a target="_blank" rel="noreferrer" href='https://github.com/antonyip/terraluna-intelligence/issues'>https://github.com/antonyip/terraluna-intelligence/issues</a></p>
     </CardContent>
     </Card></div>);
 }
@@ -324,6 +324,34 @@ function generatePieChartData(xValues, yValues) {
       },
     ],
   };
+}
+
+function LazyPieChart(props)
+{
+  const { url, xKey, yKey, title, showLabels } = props;
+  const [getData, setData] = useState("")
+
+  React.useEffect(() => {
+    axios.get(url).then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+  },[]);
+
+  if (getData === "") return (<div><CircularProgress /></div>);
+  //console.log(getData);
+  var xValues = []
+  var yValues = []
+  getData.data.forEach( d => {
+    xValues.push(d[xKey]);
+    yValues.push(d[yKey]);
+  })
+
+  var chartOptions = generateChartOptions(title, showLabels);
+  var chartData = generatePieChartData(xValues, yValues);
+  
+  return <Bar md={6} options={chartOptions} data={chartData} height={null}/>
 }
 
 function LazyChartOne(props)
@@ -588,6 +616,10 @@ function BridgePage()
       <Grid item md={6}>
         <LazyChartOne url="/api/getWormholeBridgeTx" xKey="DATE" yKey="TX_COUNT" title="Wormhole TX Count" showLabels={false}/>
       </Grid>
+      <Grid item md={5}>
+        <LazyPieChart url="/api/getWormholeDestinations" xKey="BRIDGE_DESTINATION" yKey="USER" title="Ratios Of Wormhole Outflow" showLabels={false}/>
+      </Grid>
+      <Grid item md={1}></Grid>
       <Grid item md={6}>
         <LazyChartOne url="/api/getTerraBridgeTx" xKey="DATE" yKey="TX_COUNT" title="Terra Bridge TX Count" showLabels={false}/>
       </Grid>
