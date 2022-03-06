@@ -120,6 +120,7 @@ function Pages(props) {
   if(props.pageNumber === 1) {return (<div><BlockchainStatsPage /></div>);}
   if(props.pageNumber === 2) {return (<div><StableCoinPage /></div>);}
   if(props.pageNumber === 3) {return (<div><CW20Page /></div>);}
+  if(props.pageNumber === 4) {return (<div><MarketFlowPage /></div>);}
   if(props.pageNumber === 5) {return (<div><BridgePage /></div>);}
   
   if(props.pageNumber === 8) {return (<div><FreeWillyPage /></div>);}
@@ -129,6 +130,7 @@ function Pages(props) {
   if (props.pageNumber === 'RandomEarth') {return (<div><RandomEarthPage /></div>);}
   if (props.pageNumber === 'Mirror') {return (<div><MirrorPage /></div>);}
   if (props.pageNumber === 'Angel (Halo)') {return (<div><AngelPage /></div>);}
+  if (props.pageNumber === 'Spectrum') {return (<div><SpectrumPage /></div>);}
   
   
   return (
@@ -382,6 +384,29 @@ function LazyChartCoinGecko(props)
   return <Bar md={6} options={chartOptions} data={chartData} height={null}/>
 }
 
+function LazyTable(props)
+{
+  const { url, fields } = props;
+  const [getData, setData] = useState("")
+
+  React.useEffect(() => {
+    axios.get(url).then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+  },[]);
+
+  if (getData === "") return <div>Loading...</div>
+
+  var i = 0;
+  return (
+    <div style={{ height: '60vh', width: '100%' }}><h2>Traders that average 10k USD a day over 90 days.</h2>
+      <DataGrid autoPageSize components={{ Toolbar: GridToolbar }} rowHeight={25} getRowId={(row) => ++i} rows={getData.data} columns={fields} />
+    </div>
+  );
+}
+
 //---------------------- Sub Pages
 function BlockchainStatsPage()
 {
@@ -570,15 +595,63 @@ function BridgePage()
   )
 }
 
+function MarketFlowPage()
+{
+  var myFields = [
+    { field: 'TRADER', headerName: 'address', width: 450 },
+    { field: 'SUM_RETURN_AMOUNT_USD', headerName: 'Volume', width: 150 },
+  ]
+
+  
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={8}>
+        <LazyTable url="/api/getTopTraders" fields={myFields}/>
+      </Grid>
+      <Grid item md={4}>
+        todo: figure out market flow based on these traders
+      </Grid>
+    </Grid>
+  )
+}
+
 function AngelPage()
 {
+  // Resource: https://app.flipsidecrypto.com/dashboard/angel-protocol-delegations-wj-9hn
+  /*
   return (
     <>
     <Card><CardHeader title="TODO: Integrate all the charts natively" /></Card>
       <iframe src='https://app.flipsidecrypto.com/dashboard/angel-protocol-delegations-wj-9hn' width="100%" height="600vh"/>
     </>
   )
+  */
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={8}>
+        <LazyChartOne url="/api/getAngelDelegations" xKey="DAY_DATE" yKey="DAILY_LUNA" title="Angel Delegations" showLabels={false}/>
+      </Grid>
+      <Grid item md={8}>
+        <LazyChartCoinGecko url="/api/getCoinGeckoPrice/?currency=spectrum-token" title="Spec Token Price" showLabels={false}/>
+      </Grid>
+    </Grid>
+  )
 }
+
+function SpectrumPage()
+{
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={8}>
+        <LazyChartCoinGecko url="/api/getCoinGeckoPrice/?currency=spectrum-token" title="Spec Token Price" showLabels={false}/>
+      </Grid>
+      <Grid item md={4}>
+        Hello, nothing to put here for now...
+      </Grid>
+    </Grid>
+  )
+}
+
 
 
 function ET_Circulation()
@@ -1129,7 +1202,7 @@ function PermanentDrawerLeft() {
             </ListItem>
             <ListItem button key={'Market Flow'} onClick={() => setPage(4)}>
               <ListItemIcon>
-              <Image alt="" src='/x.png' height={24} width={24} />
+              <Image alt="" src='/luna.png' height={24} width={24} />
               </ListItemIcon>
               <ListItemText primary={'Market Flow'} />
             </ListItem>
@@ -1159,6 +1232,7 @@ function PermanentDrawerLeft() {
                 ,['Knowhere','/luna.png'] 
                 ,['RandomEarth','/RE.png']
                 ,['Angel (Halo)','/HALO60.png']
+                ,['Spectrum','/SPEC60.png']
               ].sort().map( n => {
                 return (
                   <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
@@ -1187,7 +1261,6 @@ function PermanentDrawerLeft() {
               ,'VKR'
               ,'Apollo'
               ,'Orion'
-              ,'Spectrum'
               ,'Glow'
               ,'Alte'
               ,'Kujira'
