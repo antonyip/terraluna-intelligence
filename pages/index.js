@@ -1079,6 +1079,14 @@ function AnchorPage()
           <Bar options={ancbEthOptions} data={ancbEthData} height={null}/>
         </Grid>
     </Grid>
+    <Grid container spacing={2}>
+        <Grid item md={6}>
+          <LazyChartOne url="/api/getAncbLunaStats" xKey="DATES" yKey="TVL_AMT" title="bLuna TVL" showLabels={false}/>
+        </Grid>
+        <Grid item md={6}>
+          <LazyChartOne url="/api/getAncbEthStats" xKey="DATES" yKey="TVL_AMT" title="bETH TVL" showLabels={false}/>
+        </Grid>
+    </Grid>
     </>
     );
 }
