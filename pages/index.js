@@ -1155,7 +1155,7 @@ function AnchorPage()
   ancbLunaFinal.push(ancbLunaProvide)
   ancbLunaFinal.push(ancbLunaWithdraw)
   ancbLunaFinal.push(ancbLunaNet)
-  var ancbLunaOptions = generateChartOptions("bLuna Stats", false);
+  var ancbLunaOptions = generateChartOptions("bLuna Inflow / Outflows", false);
   var ancbLunaData = generateBarChartSeriesData(ancbLunaDate, ancbLunaFinal,["Provide","Withdraw","Net"]);
 
   var ancbEthDate = []
@@ -1177,7 +1177,7 @@ function AnchorPage()
   ancbEthFinal.push(ancbEthProvide)
   ancbEthFinal.push(ancbEthWithdraw)
   ancbEthFinal.push(ancbEthNet)
-  var ancbEthOptions = generateChartOptions("bEth Stats", false);
+  var ancbEthOptions = generateChartOptions("bEth Inflows / Outflows", false);
   var ancbEthData = generateBarChartSeriesData(ancbEthDate, ancbEthFinal,["Provide","Withdraw","Net"]);
   
   return (
@@ -1211,10 +1211,10 @@ function AnchorPage()
     </Grid>
     <Grid container spacing={2}>
         <Grid item md={6}>
-          <LazyChartOne url="/api/getAncbLunaStats" xKey="DATES" yKey="TVL_AMT" title="bLuna TVL" showLabels={false}/>
+          <LazyChartOne url="/api/getAncbLunaStats" xKey="DATES" yKey="TVL_AMT" title="bLuna TVL (bLUNA)" showLabels={false}/>
         </Grid>
         <Grid item md={6}>
-          <LazyChartOne url="/api/getAncbEthStats" xKey="DATES" yKey="TVL_AMT" title="bETH TVL" showLabels={false}/>
+          <LazyChartOne url="/api/getAncbEthStats" xKey="DATES" yKey="TVL_AMT" title="bETH TVL (bETH)" showLabels={false}/>
         </Grid>
     </Grid>
     </>
@@ -1399,7 +1399,7 @@ function PermanentDrawerLeft() {
               [
                 ['Anchor','/anchor.png']
                 ,['Mirror',"/mirror.png"]
-                ,['Knowhere','/luna.png'] 
+                ,['Knowhere','/kw.jpeg'] 
                 ,['RandomEarth','/RE.png']
                 ,['Angel (Halo)','/HALO60.png']
                 ,['Spectrum','/SPEC60.png']
