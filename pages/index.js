@@ -133,6 +133,7 @@ function Pages(props) {
   if (props.pageNumber === 'Spectrum') {return (<div><SpectrumPage /></div>);}
   if (props.pageNumber === 'Galactic Punks') {return (<div><GPPage /></div>);}
   if (props.pageNumber === 'Levana Dragons') {return (<div><LevanaPage /></div>);}
+  if (props.pageNumber === 'Chai') {return (<div><ChaiPage /></div>);}
   
   
   
@@ -472,6 +473,46 @@ function LazyTable(props)
   );
 }
 
+function LazyInOutNetChart(props)
+{
+  const { url, xKey, yIn, yOut, yNet, title, showLabels } = props;
+  const [getData, setData] = useState("")
+
+  React.useEffect(() => {
+    axios.get(url).then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+  },[]);
+
+  if (getData === "") return (<div><CircularProgress /></div>);
+
+  var dataXdate = []
+  var ancbLunaFinal = []
+  var dataYin = []
+  var dataYout = []
+  var dataYnet = []
+  var limit = 35;
+  getData.data.forEach(element => {
+    if (limit > 0)
+    {
+      dataXdate.push(element[xKey].substr(0,10));
+      dataYin.push(element[yIn]);
+      dataYout.push(-element[yOut]);
+      dataYnet.push(element[yIn] - element[yOut]);
+      limit -= 1;
+    }
+  });
+  ancbLunaFinal.push(dataYin)
+  ancbLunaFinal.push(dataYout)
+  ancbLunaFinal.push(dataYnet)
+  var ancbLunaOptions = generateChartOptions(title, showLabels);
+  var ancbLunaData = generateBarChartSeriesData(dataXdate, ancbLunaFinal,["Provide","Withdraw","Net"]);
+
+  return <Bar data={ancbLunaData} options={ancbLunaOptions} height={null} />
+}
+
 //---------------------- Sub Pages
 function BlockchainStatsPage()
 {
@@ -789,6 +830,20 @@ function LevanaPage()
   )
 }
 
+function ChaiPage()
+{
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={2}>
+        <p>Just some net movement in USD. 3M daily transacted in USD is a pretty nice number.</p>
+        <a target="_blank" rel="noreferrer" href="https://techcrunch.com/2020/12/09/seoul-based-payment-tech-startup-chai-gets-60-million-from-hanhwa-softbank-ventures-asia/">Click me for news!</a>
+      </Grid>
+      <Grid item md={10}>
+        <LazyInOutNetChart url="/api/getChaiFlow" xKey="DAY_DATE" yIn="SUM_INBOUND" yOut="SUM_OUTBOUND" title="Chai Net Flow (USD)" showLabels={false}/>
+      </Grid>
+    </Grid>
+  )
+}
 
 function ET_Circulation()
 {
@@ -1406,6 +1461,7 @@ function PermanentDrawerLeft() {
                 ,['Spectrum','/SPEC60.png']
                 ,['Galactic Punks', '/gp.jpeg']
                 ,['Levana Dragons', '/ld.png']
+                ,['Chai', '/chai.jpeg']
                 // governance https://app.flipsidecrypto.com/dashboard/terra-146-whale-voters-k56HKq
                 // loop https://app.flipsidecrypto.com/dashboard/whale-dependency-index-IqUTca
                 // astroport price https://app.flipsidecrypto.com/dashboard/lockdrops-keep-fallin-on-my-head-txvCxH
