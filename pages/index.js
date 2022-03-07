@@ -132,6 +132,8 @@ function Pages(props) {
   if (props.pageNumber === 'Angel (Halo)') {return (<div><AngelPage /></div>);}
   if (props.pageNumber === 'Spectrum') {return (<div><SpectrumPage /></div>);}
   if (props.pageNumber === 'Galactic Punks') {return (<div><GPPage /></div>);}
+  if (props.pageNumber === 'Levana Dragons') {return (<div><LevanaPage /></div>);}
+  
   
   
   
@@ -736,6 +738,54 @@ function GPPage()
       <LazyChartOne url="/api/getRandomEarthGPSales" xKey="DATE" yKey="FLOOR_LUNA" title="GP Daily Floor on Random Earth (Luna)" showLabels={false}/>
       </Grid>
     </Grid>
+  )
+}
+
+function LevanaPage()
+{
+  return (
+    <>
+    <Grid container spacing={2}>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getRandomEarthLevanaMeteorSales" xKey="DAY_DATE" yKey="NFT_TRADED" title="Meteor Daily Sales on Random Earth (Txs)" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+      <LazyChartOne url="/api/getRandomEarthLevanaMeteorSales" xKey="DAY_DATE" yKey="LUNA_VOL" title="Meteor Daily Volume on Random Earth (Luna)" showLabels={false}/>
+      </Grid>
+    </Grid>
+    <Grid container spacing={2}>
+    <Grid item md={6}>
+      <LazyChartOne url="/api/getRandomEarthLevanaEggSales" xKey="DAY_DATE" yKey="NFT_TRADED" title="Egg Daily Sales on Random Earth (Txs)" showLabels={false}/>
+    </Grid>
+    <Grid item md={6}>
+    <LazyChartOne url="/api/getRandomEarthLevanaEggSales" xKey="DAY_DATE" yKey="LUNA_VOL" title="Egg Daily Volume on Random Earth (Luna)" showLabels={false}/>
+    </Grid>
+    </Grid>
+      <Grid container spacing={2}>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getRandomEarthLevanaDustSales" xKey="DAY_DATE" yKey="NFT_TRADED" title="Dust Daily Sales on Random Earth (Txs)" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+      <LazyChartOne url="/api/getRandomEarthLevanaDustSales" xKey="DAY_DATE" yKey="LUNA_VOL" title="Dust Daily Volume on Random Earth (Luna)" showLabels={false}/>
+      </Grid>
+    </Grid>
+      <Grid container spacing={2}>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getRandomEarthLevanaDragonSales" xKey="DAY_DATE" yKey="NFT_TRADED" title="Dragon Daily Sales on Random Earth (Txs)" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+      <LazyChartOne url="/api/getRandomEarthLevanaDragonSales" xKey="DAY_DATE" yKey="LUNA_VOL" title="Dragon Daily Volume on Random Earth (Luna)" showLabels={false}/>
+      </Grid>
+    </Grid>
+      <Grid container spacing={2}>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getRandomEarthLevanaLootSales" xKey="DAY_DATE" yKey="NFT_TRADED" title="Loot Daily Sales on Random Earth (Txs)" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+      <LazyChartOne url="/api/getRandomEarthLevanaLootSales" xKey="DAY_DATE" yKey="LUNA_VOL" title="Loot Daily Volume on Random Earth (Luna)" showLabels={false}/>
+      </Grid>
+    </Grid>
+    </>
   )
 }
 
@@ -1354,6 +1404,7 @@ function PermanentDrawerLeft() {
                 ,['Angel (Halo)','/HALO60.png']
                 ,['Spectrum','/SPEC60.png']
                 ,['Galactic Punks', '/gp.jpeg']
+                ,['Levana Dragons', '/ld.png']
               ].sort().map( n => {
                 return (
                   <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
@@ -1385,7 +1436,6 @@ function PermanentDrawerLeft() {
               ,'Glow'
               ,'Alte'
               ,'Kujira'
-              ,'Levana'
               ,'Loterra'
               ,'Terra World Token'
               ,'Playnity'
