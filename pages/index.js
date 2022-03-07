@@ -1345,6 +1345,7 @@ function PermanentDrawerLeft() {
             <ListItem button key={'About'} onClick={() => setPage(0)}>
               <ListItemIcon>
               <IconButton color="secondary" aria-label="add an alarm">
+                <Image alt="" src='/me.png' height={24} width={24} />
               </IconButton>
               </ListItemIcon>
               <ListItemText primary={'About'} />
@@ -1405,6 +1406,10 @@ function PermanentDrawerLeft() {
                 ,['Spectrum','/SPEC60.png']
                 ,['Galactic Punks', '/gp.jpeg']
                 ,['Levana Dragons', '/ld.png']
+                // governance https://app.flipsidecrypto.com/dashboard/terra-146-whale-voters-k56HKq
+                // loop https://app.flipsidecrypto.com/dashboard/whale-dependency-index-IqUTca
+                // astroport price https://app.flipsidecrypto.com/dashboard/lockdrops-keep-fallin-on-my-head-txvCxH
+                // bridge in https://app.flipsidecrypto.com/dashboard/bridge-then-anchor-WZMBAJ
               ].sort().map( n => {
                 return (
                   <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
