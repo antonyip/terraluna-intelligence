@@ -4,7 +4,7 @@ import axios from 'axios'
 export default async function handler(req, res) {
     let returnValue = "";
     let returnStatus = 200;
-    await axios.get('https://api.flipsidecrypto.com/api/v2/queries/6bd3ee58-b285-47dc-aa18-9f553a2bdea5/data/latest').then(reply => {
+    await axios.get('https://api.flipsidecrypto.com/api/v2/queries/456bb369-67b2-4c4c-b0ad-d7a7cd3e10ad/data/latest').then(reply => {
         returnValue = reply.data;
         
     }).catch(err => {

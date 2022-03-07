@@ -131,6 +131,8 @@ function Pages(props) {
   if (props.pageNumber === 'Mirror') {return (<div><MirrorPage /></div>);}
   if (props.pageNumber === 'Angel (Halo)') {return (<div><AngelPage /></div>);}
   if (props.pageNumber === 'Spectrum') {return (<div><SpectrumPage /></div>);}
+  if (props.pageNumber === 'Galactic Punks') {return (<div><GPPage /></div>);}
+  
   
   
   return (
@@ -720,6 +722,22 @@ function SpectrumPage()
   )
 }
 
+function GPPage()
+{
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getRandomEarthGPSales" xKey="DATE" yKey="NUM_SALES" title="GP Daily Sales on Random Earth (Txs)" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+      <LazyChartOne url="/api/getRandomEarthGPSales" xKey="DATE" yKey="SUM_AMOUNT_LUNA" title="GP Daily Volume on Random Earth (Luna)" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+      <LazyChartOne url="/api/getRandomEarthGPSales" xKey="DATE" yKey="FLOOR_LUNA" title="GP Daily Floor on Random Earth (Luna)" showLabels={false}/>
+      </Grid>
+    </Grid>
+  )
+}
 
 
 function ET_Circulation()
@@ -1320,12 +1338,12 @@ function PermanentDrawerLeft() {
               </ListItemIcon>
               <ListItemText primary={'Luna Liq Queue'} />
             </ListItem>
-            <ListItem button key={'NFTs'} onClick={() => setPage(7)}>
+            {/* <ListItem button key={'NFTs'} onClick={() => setPage(7)}>
               <ListItemIcon>
               <Image alt="" src='/x.png' height={24} width={24} />
               </ListItemIcon>
               <ListItemText primary={'NFTs'} />
-            </ListItem>
+            </ListItem> */}
             <Divider></Divider>
             {
               [
@@ -1335,6 +1353,7 @@ function PermanentDrawerLeft() {
                 ,['RandomEarth','/RE.png']
                 ,['Angel (Halo)','/HALO60.png']
                 ,['Spectrum','/SPEC60.png']
+                ,['Galactic Punks', '/gp.jpeg']
               ].sort().map( n => {
                 return (
                   <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
