@@ -122,10 +122,10 @@ function AboutPage()
         <li>https://twitter.com/sammycrypto4</li>
         <li>https://twitter.com/ndhung1104</li>
         <li>https://twitter.com/der_piper</li>
+        <li>https://twitter.com/adriaparcerisas</li>
+        <li>https://twitter.com/jxboi</li>
         <li>KARTOD</li>
-        <li>adriaparcerisas</li>
         <li>ltirrell</li>
-        <li>jxboi</li>
         </p>
       
     </CardContent>
@@ -1546,6 +1546,11 @@ function PermanentDrawerLeft() {
                 // loop https://app.flipsidecrypto.com/dashboard/whale-dependency-index-IqUTca
                 // astroport price https://app.flipsidecrypto.com/dashboard/lockdrops-keep-fallin-on-my-head-txvCxH
                 // bridge in https://app.flipsidecrypto.com/dashboard/bridge-then-anchor-WZMBAJ
+                // stader https://app.flipsidecrypto.com/velocity/collections/d207f92a-0455-454e-a6b0-8444ba179246
+                // tfloki https://app.flipsidecrypto.com/velocity/queries/5967c8f2-eb21-4de2-b760-aaec5e5992d8
+                // pylon https://app.flipsidecrypto.com/velocity/collections/4aaac826-5678-4338-b19a-98c967118e70
+                // ldo https://app.flipsidecrypto.com/velocity/collections/b62badb5-1698-4205-a613-6a32b5c92b58
+                // galatic grds https://app.flipsidecrypto.com/velocity/queries/f3aa6a75-6ce5-4b8b-ac01-ec8272bd7164
               ].sort().map( n => {
                 return (
                   <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
