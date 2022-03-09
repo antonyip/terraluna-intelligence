@@ -109,6 +109,25 @@ function AboutPage()
       <p>This dashboard attempts to capture all sorts of data related to Terra-Luna.  Feel free to explore the data!</p>
       <a target="_blank" rel="noreferrer" href='https://flipsidecrypto.xyz'><Image alt="" height={40} width={264} src="/powered.png"></Image></a>
       <p>Feel free to request for more types of analytics here - <a target="_blank" rel="noreferrer" href='https://github.com/antonyip/terraluna-intelligence/issues'>https://github.com/antonyip/terraluna-intelligence/issues</a></p>
+      <p>
+        Credits:
+        https://twitter.com/pinehearst_
+        https://twitter.com/darksoulsfanlol
+        https://twitter.com/sem1d5
+        https://twitter.com/jp12__
+        https://twitter.com/TZMCrypto
+        https://twitter.com/AD14367367
+        https://twitter.com/cryptoicicle
+        https://twitter.com/thekakamora
+        https://twitter.com/sammycrypto4
+        https://twitter.com/ndhung1104
+        https://twitter.com/der_piper
+        KARTOD
+        adriaparcerisas
+        ltirrell
+        jxboi
+        </p>
+      
     </CardContent>
     </Card></div>);
 }
