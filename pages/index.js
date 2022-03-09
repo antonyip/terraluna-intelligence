@@ -124,7 +124,7 @@ function AboutPage()
         <li>https://twitter.com/der_piper</li>
         <li>https://twitter.com/adriaparcerisas</li>
         <li>https://twitter.com/jxboi</li>
-        <li>KARTOD</li>
+        <li>https://twitter.com/RZinovyev</li>
         <li>ltirrell</li>
         </p>
       
@@ -928,7 +928,7 @@ function LFGPage()
         <LazyChartOne url="/api/getLFGBalances" xKey="DATE" yKey="LUNA_BALANCE" title="LFG Balances" showLabels={false}/>
       </Grid>
       <Grid item md={6}>
-        <LazyChartOne url="/api/getLFGVesting" xKey="DAY_DATE" yKey="CUM_SUM_AMOUNT" title="Total Amount UST Covered" showLabels={false}/>
+        <LazyChartOne url="/api/getLFGVesting" xKey="DAY_DATE" yKey="CUM_SUM_AMOUNT" title="LFG Spend to Vesting Contracts" showLabels={false}/>
       </Grid>
     </Grid>
   )
@@ -1567,8 +1567,6 @@ function PermanentDrawerLeft() {
                 // pylon https://app.flipsidecrypto.com/velocity/collections/4aaac826-5678-4338-b19a-98c967118e70
                 // ldo https://app.flipsidecrypto.com/velocity/collections/b62badb5-1698-4205-a613-6a32b5c92b58
                 // galatic grds https://app.flipsidecrypto.com/velocity/queries/f3aa6a75-6ce5-4b8b-ac01-ec8272bd7164
-                // LFG Wallet Balances https://api.flipsidecrypto.com/api/v2/queries/39913c0e-65ba-4cf2-bb54-aa7d1872f7cf/data/latest
-                // LFG Luna Locked https://api.flipsidecrypto.com/api/v2/queries/dcb1c45f-cb5e-4d68-beb8-dc3f16afd4aa/data/latest
               ].sort().map( n => {
                 return (
                   <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
