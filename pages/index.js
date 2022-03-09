@@ -136,6 +136,8 @@ function Pages(props) {
   if (props.pageNumber === 'Chai') {return (<div><ChaiPage /></div>);}
   if (props.pageNumber === 'DegenBox') {return (<div><DegenBoxPage /></div>);}
   if (props.pageNumber === 'Mars') {return (<div><MarsPage /></div>);}
+  if (props.pageNumber === 'RiskHarbor') {return (<div><RiskHarborPage /></div>);}
+  
   
   
   
@@ -881,6 +883,24 @@ function MarsPage()
   )
 }
 
+function RiskHarborPage()
+{
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={12}>
+        Well, you guys only sold 8m worth of coverage...
+      </Grid>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getRiskHarbor" xKey="DAY_DATE" yKey="CUM_SUM_PREMIUM" title="Total Amount of Premium Gained" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getRiskHarbor" xKey="DAY_DATE" yKey="CUM_SUM_PRINCIPAL" title="Total Amount UST Covered" showLabels={false}/>
+      </Grid>
+    </Grid>
+  )
+}
+
+
 
 
 function ET_Circulation()
@@ -1502,6 +1522,7 @@ function PermanentDrawerLeft() {
                 ,['Chai', '/chai.jpeg']
                 ,['DegenBox', '/degen.png']
                 ,['Mars', '/mars.jpeg']
+                ,['RiskHarbor', '/RH.jpg']
                 // governance https://app.flipsidecrypto.com/dashboard/terra-146-whale-voters-k56HKq
                 // loop https://app.flipsidecrypto.com/dashboard/whale-dependency-index-IqUTca
                 // astroport price https://app.flipsidecrypto.com/dashboard/lockdrops-keep-fallin-on-my-head-txvCxH
