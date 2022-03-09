@@ -134,6 +134,8 @@ function Pages(props) {
   if (props.pageNumber === 'Galactic Punks') {return (<div><GPPage /></div>);}
   if (props.pageNumber === 'Levana Dragons') {return (<div><LevanaPage /></div>);}
   if (props.pageNumber === 'Chai') {return (<div><ChaiPage /></div>);}
+  if (props.pageNumber === 'DegenBox') {return (<div><DegenBoxPage /></div>);}
+  if (props.pageNumber === 'Mars') {return (<div><MarsPage /></div>);}
   
   
   
@@ -845,6 +847,42 @@ function ChaiPage()
   )
 }
 
+function DegenBoxPage()
+{
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={6}>
+        <LazyInOutNetChart url="/api/getDegenBox" xKey="DATE_A" yIn="CUMULATIVE_DEPOSIT" yOut="CUMULATIVE_REDEEM" title="DegenBox Flows" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getDegenBox" xKey="DATE_A" yKey="DEGENBOX_UST_ANCHOR" title="UST in DegenBox" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getDegenBox" xKey="DATE_A" yKey="DEGENBOXPERCENT" title="DegenBox %" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getDegenBox" xKey="DATE_A" yKey="TOTAL_UST_IN_EARN" title="Total UST in Earn" showLabels={false}/>
+      </Grid>
+    </Grid>
+  )
+}
+
+function MarsPage()
+{
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={6}>
+        <LazyInOutNetChart url="/api/getMars" xKey="TIME_MINUTE" yIn="MARS_BOUGHT" yOut="MARS_SOLD2" title="Mars Flows" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getMars" xKey="TIME_MINUTE" yKey="MARS_PRICE" title="Mars Price" showLabels={false}/>
+      </Grid>
+    </Grid>
+  )
+}
+
+
+
 function ET_Circulation()
 {
   const [getLunaPrice,setLunaPrice] = useState("")
@@ -1462,6 +1500,8 @@ function PermanentDrawerLeft() {
                 ,['Galactic Punks', '/gp.jpeg']
                 ,['Levana Dragons', '/ld.png']
                 ,['Chai', '/chai.jpeg']
+                ,['DegenBox', '/degen.png']
+                ,['Mars', '/mars.jpeg']
                 // governance https://app.flipsidecrypto.com/dashboard/terra-146-whale-voters-k56HKq
                 // loop https://app.flipsidecrypto.com/dashboard/whale-dependency-index-IqUTca
                 // astroport price https://app.flipsidecrypto.com/dashboard/lockdrops-keep-fallin-on-my-head-txvCxH
