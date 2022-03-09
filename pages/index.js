@@ -111,21 +111,21 @@ function AboutPage()
       <p>Feel free to request for more types of analytics here - <a target="_blank" rel="noreferrer" href='https://github.com/antonyip/terraluna-intelligence/issues'>https://github.com/antonyip/terraluna-intelligence/issues</a></p>
       <p>
         Credits:
-        https://twitter.com/pinehearst_
-        https://twitter.com/darksoulsfanlol
-        https://twitter.com/sem1d5
-        https://twitter.com/jp12__
-        https://twitter.com/TZMCrypto
-        https://twitter.com/AD14367367
-        https://twitter.com/cryptoicicle
-        https://twitter.com/thekakamora
-        https://twitter.com/sammycrypto4
-        https://twitter.com/ndhung1104
-        https://twitter.com/der_piper
-        KARTOD
-        adriaparcerisas
-        ltirrell
-        jxboi
+        <li>https://twitter.com/pinehearst_</li>
+        <li>https://twitter.com/darksoulsfanlol</li>
+        <li>https://twitter.com/sem1d5</li>
+        <li>https://twitter.com/jp12__</li>
+        <li>https://twitter.com/TZMCrypto</li>
+        <li>https://twitter.com/AD14367367</li>
+        <li>https://twitter.com/cryptoicicle</li>
+        <li>https://twitter.com/thekakamora</li>
+        <li>https://twitter.com/sammycrypto4</li>
+        <li>https://twitter.com/ndhung1104</li>
+        <li>https://twitter.com/der_piper</li>
+        <li>KARTOD</li>
+        <li>adriaparcerisas</li>
+        <li>ltirrell</li>
+        <li>jxboi</li>
         </p>
       
     </CardContent>
