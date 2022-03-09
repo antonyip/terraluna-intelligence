@@ -156,6 +156,7 @@ function Pages(props) {
   if (props.pageNumber === 'DegenBox') {return (<div><DegenBoxPage /></div>);}
   if (props.pageNumber === 'Mars') {return (<div><MarsPage /></div>);}
   if (props.pageNumber === 'RiskHarbor') {return (<div><RiskHarborPage /></div>);}
+  if (props.pageNumber === 'LFG') {return (<div><LFGPage /></div>);}
   
   
   
@@ -919,6 +920,19 @@ function RiskHarborPage()
   )
 }
 
+function LFGPage()
+{
+  return (
+    <Grid container spacing={2}>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getLFGBalances" xKey="DATE" yKey="LUNA_BALANCE" title="LFG Balances" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getLFGVesting" xKey="DAY_DATE" yKey="CUM_SUM_AMOUNT" title="Total Amount UST Covered" showLabels={false}/>
+      </Grid>
+    </Grid>
+  )
+}
 
 
 
@@ -1542,6 +1556,8 @@ function PermanentDrawerLeft() {
                 ,['DegenBox', '/degen.png']
                 ,['Mars', '/mars.jpeg']
                 ,['RiskHarbor', '/RH.jpg']
+                ,['LFG', '/LFG.jpg']
+                
                 // governance https://app.flipsidecrypto.com/dashboard/terra-146-whale-voters-k56HKq
                 // loop https://app.flipsidecrypto.com/dashboard/whale-dependency-index-IqUTca
                 // astroport price https://app.flipsidecrypto.com/dashboard/lockdrops-keep-fallin-on-my-head-txvCxH
@@ -1551,6 +1567,8 @@ function PermanentDrawerLeft() {
                 // pylon https://app.flipsidecrypto.com/velocity/collections/4aaac826-5678-4338-b19a-98c967118e70
                 // ldo https://app.flipsidecrypto.com/velocity/collections/b62badb5-1698-4205-a613-6a32b5c92b58
                 // galatic grds https://app.flipsidecrypto.com/velocity/queries/f3aa6a75-6ce5-4b8b-ac01-ec8272bd7164
+                // LFG Wallet Balances https://api.flipsidecrypto.com/api/v2/queries/39913c0e-65ba-4cf2-bb54-aa7d1872f7cf/data/latest
+                // LFG Luna Locked https://api.flipsidecrypto.com/api/v2/queries/dcb1c45f-cb5e-4d68-beb8-dc3f16afd4aa/data/latest
               ].sort().map( n => {
                 return (
                   <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
