@@ -933,6 +933,10 @@ function LFGPage()
 {
   return (
     <Grid container spacing={2}>
+      <Grid item md={12}>
+        LFG Wallet - https://finder.extraterrestrial.money/mainnet/account/terra1gr0xesnseevzt3h4nxr64sh5gk4dwrwgszx3nw
+        who are you - https://finder.extraterrestrial.money/mainnet/address/terra1cymh5ywgn4azak74h4gsrnakqgel4y9ssersvx
+      </Grid>
       <Grid item md={6}>
         <LazyChartOne url="/api/getLFGBalances" xKey="DATE" yKey="LUNA_BALANCE" title="LFG Balances" showLabels={false}/>
       </Grid>
