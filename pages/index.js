@@ -532,7 +532,7 @@ function LazyInOutNetChart(props)
   ancbLunaFinal.push(dataYout)
   ancbLunaFinal.push(dataYnet)
   var ancbLunaOptions = generateChartOptions(title, showLabels);
-  var ancbLunaData = generateBarChartSeriesData(dataXdate, ancbLunaFinal,["Provide","Withdraw","Net"]);
+  var ancbLunaData = generateBarChartSeriesData(dataXdate, ancbLunaFinal,["Inflows","Outflows","Net"]);
 
   return <Bar data={ancbLunaData} options={ancbLunaOptions} height={null} />
 }
@@ -727,6 +727,15 @@ function BridgePage()
       <Grid item md={1}></Grid>
       <Grid item md={6}>
         <LazyChartOne url="/api/getTerraBridgeTx" xKey="DATE" yKey="TX_COUNT" title="Terra Bridge TX Count" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        
+      </Grid>
+      <Grid item md={6}>
+        <LazyInOutNetChart url="/api/getIbcUst" xKey="DAY_DATE" yIn="SUM_RAW_AMOUNT" yOut="IBC_OUT_AMOUNT" title="Terra Bridge IBC (UST)" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyInOutNetChart url="/api/getIbcLuna" xKey="DAY_DATE" yIn="SUM_RAW_AMOUNT" yOut="IBC_OUT_AMOUNT" title="Terra Bridge IBC (Luna)" showLabels={false}/>
       </Grid>
     </Grid>
   )
