@@ -934,8 +934,11 @@ function LFGPage()
   return (
     <Grid container spacing={2}>
       <Grid item md={12}>
-        LFG Wallet - https://finder.extraterrestrial.money/mainnet/account/terra1gr0xesnseevzt3h4nxr64sh5gk4dwrwgszx3nw
-        who are you - https://finder.extraterrestrial.money/mainnet/address/terra1cymh5ywgn4azak74h4gsrnakqgel4y9ssersvx
+        <li>TFL - https://finder.extraterrestrial.money/mainnet/address/terra1dp0taj85ruc299rkdvzp4z5pfg6z6swaed74e6 </li>
+        <li>TFL - Hotwallet? - https://etherscan.io/address/0xe3011271416f3a827e25d5251d34a56d83446159</li>
+        <li>TFL - Gnosis Safe for 1B BTC? https://etherscan.io/address/0xad41bd1cf3fd753017ef5c0da8df31a3074ea1ea </li>
+        <li>LFG Wallet - https://finder.extraterrestrial.money/mainnet/account/terra1gr0xesnseevzt3h4nxr64sh5gk4dwrwgszx3nw</li>
+        <li>LFG/TFL Burning Wallet (Burns 1000Luna every 10 blocks for UST) - https://finder.extraterrestrial.money/mainnet/address/terra1cymh5ywgn4azak74h4gsrnakqgel4y9ssersvx</li>
       </Grid>
       <Grid item md={6}>
         <LazyChartOne url="/api/getLFGBalances" xKey="DATE" yKey="LUNA_BALANCE" title="LFG Balances" showLabels={false}/>
