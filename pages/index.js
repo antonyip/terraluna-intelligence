@@ -125,7 +125,7 @@ function AboutPage()
         <li>https://twitter.com/adriaparcerisas</li>
         <li>https://twitter.com/jxboi</li>
         <li>https://twitter.com/RZinovyev</li>
-        <li>ltirrell</li>
+        <li>https://twitter.com/ltirrell_</li>
         </p>
       
     </CardContent>
