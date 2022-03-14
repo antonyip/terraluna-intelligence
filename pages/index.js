@@ -993,6 +993,10 @@ function ET_Circulation()
       limit -= 1;
     }
   });
+  dataLunaDate.reverse();
+  dataLunaBurnTotal.reverse();
+  dataLunaBurnCirc.reverse();
+  
   var lunaBurnOptions = generateChartOptions("Luna in Circulation", false);
   var lunaBurn = generateBarChartData(dataLunaDate, dataLunaBurnCirc);
 
@@ -1007,6 +1011,9 @@ function ET_Circulation()
       limit -= 1;
     }
   });
+
+  dataUSTDate.reverse();
+  dataUSTBurn.reverse();
   var USTBurnOptions = generateChartOptions("UST in Circulation", false);
   var USTBurn = generateBarChartData(dataUSTDate, dataUSTBurn);
 
