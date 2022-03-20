@@ -91,7 +91,16 @@ var moneyFormat = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 2, // (causes 2500.99 to be printed as $2,501)
 });
 
-var tokenFormat = new Intl.NumberFormat('en-US', {
+var tokenFormat6 = new Intl.NumberFormat('en-US', {
+  //style: 'currency',
+  //currency: 'USD',
+
+  // These options are needed to round to whole numbers if that's what you want.
+  minimumFractionDigits: 6, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  maximumFractionDigits: 6, // (causes 2500.99 to be printed as $2,501)
+});
+
+var tokenFormat18 = new Intl.NumberFormat('en-US', {
   //style: 'currency',
   //currency: 'USD',
 
@@ -1439,12 +1448,14 @@ return (
         <Grid item md={6}>
           https://snowtrace.io/token/0xb599c3590f42f8f995ecfa0f85d2980b76862fc1
           <br />
-          UST total supply on AVAX chain: {moneyFormat.format(parseInt(getData.data.result))}
+          UST total supply on AVAX chain: {moneyFormat.format(parseInt(getData.data.result)/10**6)}
         </Grid>
         <Grid item md={6}>
           https://snowtrace.io/token/0xab9a04808167c170a9ec4f8a87a0cd781ebcd55e
           <br />
-          aUST total supply (Tokens) on AVAX chain: {tokenFormat.format(parseInt(getData2.data.result))}
+          aUST total supply (Tokens) on AVAX chain: {tokenFormat6.format(parseInt(getData2.data.result)/10**6)}
+          <br />
+          aUST total supply (USD Value): {moneyFormat.format(parseInt(getData2.data.result)* 1.2 / 10**6)}
         </Grid>
     </Grid>
     </>
