@@ -82,6 +82,24 @@ var colors = [
   '#2F58F6',
 ]
 
+var moneyFormat = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+
+  // These options are needed to round to whole numbers if that's what you want.
+  minimumFractionDigits: 2, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  maximumFractionDigits: 2, // (causes 2500.99 to be printed as $2,501)
+});
+
+var tokenFormat = new Intl.NumberFormat('en-US', {
+  //style: 'currency',
+  //currency: 'USD',
+
+  // These options are needed to round to whole numbers if that's what you want.
+  minimumFractionDigits: 18, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  maximumFractionDigits: 18, // (causes 2500.99 to be printed as $2,501)
+});
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -145,6 +163,7 @@ function Pages(props) {
   if(props.pageNumber === 8) {return (<div><FreeWillyPage /></div>);}
   
   if (props.pageNumber === 'Anchor') {return (<div><AnchorPage /></div>);}
+  if (props.pageNumber === 'Anchor-Avax') {return (<div><AnchorAvaxPage /></div>);}
   if (props.pageNumber === 'Knowhere') {return (<div><KnowherePage /></div>);}
   if (props.pageNumber === 'RandomEarth') {return (<div><RandomEarthPage /></div>);}
   if (props.pageNumber === 'Mirror') {return (<div><MirrorPage /></div>);}
@@ -1390,6 +1409,49 @@ function AnchorPage()
     );
 }
 
+function AnchorAvaxPage()
+{
+  const [getData,setData] = useState("")
+  const [getData2,setData2] = useState("")
+  
+  React.useEffect(() => {
+
+    axios.get("/api/getUSTonAvax").then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
+    axios.get("/api/getaUSTonAvax").then (response => {
+      setData2(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
+  },[]);
+
+  if (getData === "") return (<div><CircularProgress /></div>);
+  if (getData2 === "") return (<div><CircularProgress /></div>);
+
+return (
+    <>
+    <Grid container spacing={2}>
+        <Grid item md={6}>
+          https://snowtrace.io/token/0xb599c3590f42f8f995ecfa0f85d2980b76862fc1
+          <br />
+          UST total supply on AVAX chain: {moneyFormat.format(parseInt(getData.data.result))}
+        </Grid>
+        <Grid item md={6}>
+          https://snowtrace.io/token/0xab9a04808167c170a9ec4f8a87a0cd781ebcd55e
+          <br />
+          aUST total supply (Tokens) on AVAX chain: {tokenFormat.format(parseInt(getData2.data.result))}
+        </Grid>
+    </Grid>
+    </>
+    );
+}
+
+
 function KnowherePage()
 {
   const [getVolume,setVolume] = useState("")
@@ -1568,6 +1630,7 @@ function PermanentDrawerLeft() {
             {
               [
                 ['Anchor','/anchor.png']
+                ,['Anchor-Avax','/avax-anc.svg']
                 ,['Mirror',"/mirror.png"]
                 ,['Knowhere','/kw.jpeg'] 
                 ,['RandomEarth','/RE.png']
