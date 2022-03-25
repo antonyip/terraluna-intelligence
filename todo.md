@@ -1,17 +1,11 @@
-https://analytics.zoho.com/open-view/2528727000000022633
-https://datastudio.google.com/reporting/e568ad77-be7f-47be-8c6d-946c5f08f35b/page/p_vwnqjnbysc?s=vOcvwiJuiS0
-https://mtg-oracle-static.s3.amazonaws.com/images/logo/LFG_B2/test1.html
-https://app.flipsidecrypto.com/dashboard/acme-of-skill-terra-superdashboard-PoXIgf
-https://app.flipsidecrypto.com/dashboard/white-whale-performance-YAtxa0
-https://app.flipsidecrypto.com/velocity/visuals/6031f740-bb1d-4023-869e-bf5be226793b/6d0a3a1b-6be9-4ca5-853e-8b5d055fc8db
-https://app.flipsidecrypto.com/velocity/visuals/85145268-f592-4dd9-8aeb-354644f1bb5e/6d0a3a1b-6be9-4ca5-853e-8b5d055fc8db
-https://app.flipsidecrypto.com/dashboard/anchor-collaterals-UxMbQB
-https://app.flipsidecrypto.com/dashboard/terra-146-whale-voters-k56HKq
-https://app.flipsidecrypto.com/dashboard/whale-dependency-index-IqUTca
-https://app.flipsidecrypto.com/dashboard/lockdrops-keep-fallin-on-my-head-txvCxH
-https://app.flipsidecrypto.com/dashboard/bridge-then-anchor-WZMBAJ
-https://app.flipsidecrypto.com/velocity/collections/d207f92a-0455-454e-a6b0-8444ba179246
-https://app.flipsidecrypto.com/velocity/queries/5967c8f2-eb21-4de2-b760-aaec5e5992d8
-https://app.flipsidecrypto.com/velocity/collections/4aaac826-5678-4338-b19a-98c967118e70
-https://app.flipsidecrypto.com/velocity/collections/b62badb5-1698-4205-a613-6a32b5c92b58
-https://app.flipsidecrypto.com/velocity/queries/f3aa6a75-6ce5-4b8b-ac01-ec8272bd7164
+Anchor Collaterals - https://app.flipsidecrypto.com/dashboard/anchor-collaterals-UxMbQB
+Luna Holders (Shrimp vs Whales)- https://app.flipsidecrypto.com/dashboard/terra-146-whale-voters-k56HKq
+Loop / Mirror? - https://app.flipsidecrypto.com/dashboard/whale-dependency-index-IqUTca
+Astroport - https://app.flipsidecrypto.com/dashboard/lockdrops-keep-fallin-on-my-head-txvCxH
+
+Stader - https://app.flipsidecrypto.com/velocity/collections/d207f92a-0455-454e-a6b0-8444ba179246
+TFloki - https://app.flipsidecrypto.com/velocity/queries/5967c8f2-eb21-4de2-b760-aaec5e5992d8
+Pylon - https://app.flipsidecrypto.com/velocity/collections/4aaac826-5678-4338-b19a-98c967118e70
+LiDo - https://app.flipsidecrypto.com/velocity/collections/b62badb5-1698-4205-a613-6a32b5c92b58
+Galatic Grids - https://app.flipsidecrypto.com/velocity/queries/f3aa6a75-6ce5-4b8b-ac01-ec8272bd7164
+

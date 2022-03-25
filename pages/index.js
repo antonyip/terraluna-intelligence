@@ -28,34 +28,6 @@ import Grid from '@mui/material/Grid';
 import date from 'date-and-time';
 import Paper from '@mui/material/Paper';
 import Chart from 'chart.js/auto';
-/*
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-  PointElement,
-  LineElement,
-  PieElement,
-} from 'chart.js';
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-  PointElement,
-  LineElement,
-  PieElement,
-  Title,
-  Tooltip,
-  Legend
-);
-*/
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 
 var colors = [
@@ -173,6 +145,7 @@ function Pages(props) {
   
   if (props.pageNumber === 'Anchor') {return (<div><AnchorPage /></div>);}
   if (props.pageNumber === 'Anchor-Avax') {return (<div><AnchorAvaxPage /></div>);}
+  if (props.pageNumber === 'AcmeOfSkill') {return (<div><AcmeOfSkillPage /></div>);}
   if (props.pageNumber === 'Knowhere') {return (<div><KnowherePage /></div>);}
   if (props.pageNumber === 'RandomEarth') {return (<div><RandomEarthPage /></div>);}
   if (props.pageNumber === 'Mirror') {return (<div><MirrorPage /></div>);}
@@ -185,6 +158,7 @@ function Pages(props) {
   if (props.pageNumber === 'Mars') {return (<div><MarsPage /></div>);}
   if (props.pageNumber === 'RiskHarbor') {return (<div><RiskHarborPage /></div>);}
   if (props.pageNumber === 'LFG') {return (<div><LFGPage /></div>);}
+  if (props.pageNumber === 'WhiteWhale') {return (<div><WhiteWhalePage /></div>);}
   
   
   
@@ -765,7 +739,13 @@ function BridgePage()
       <Grid item md={6}>
         <LazyInOutNetChart url="/api/getIbcLuna" xKey="DAY_DATE" yIn="SUM_RAW_AMOUNT" yOut="IBC_OUT_AMOUNT" title="Terra Bridge IBC (Luna)" showLabels={false}/>
       </Grid>
+
+      <Grid item md={12}>
+        Comparison to BSC and ETH: <Button variant="contained" onClick={() => { window.open("https://app.flipsidecrypto.com/dashboard/bridge-then-anchor-WZMBAJ", "_blank") }}>https://app.flipsidecrypto.com/dashboard/bridge-then-anchor-WZMBAJ</Button>
+      </Grid>
     </Grid>
+
+
   )
 }
 
@@ -931,10 +911,16 @@ function MarsPage()
   return (
     <Grid container spacing={2}>
       <Grid item md={6}>
-        <LazyInOutNetChart url="/api/getMars" xKey="TIME_MINUTE" yIn="MARS_BOUGHT" yOut="MARS_SOLD2" title="Mars Flows" showLabels={false}/>
+        <LazyChartOne url="/api/getMars" xKey="TIME_MINUTE" yKey="MARS_PRICE" title="Mars Price" showLabels={false}/>
       </Grid>
       <Grid item md={6}>
-        <LazyChartOne url="/api/getMars" xKey="TIME_MINUTE" yKey="MARS_PRICE" title="Mars Price" showLabels={false}/>
+        <LazyInOutNetChart url="/api/getMars" xKey="TIME_MINUTE" yIn="MARS_BOUGHT" yOut="MARS_SOLD2" title="Mars Token Flows (Buys and Sells)" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyInOutNetChart url="/api/getMarsLunaBorrow" xKey="DAY" yIn="NET_LUNA_AMOUNT_TOTAL" yOut="NET_LUNA_BORROWED_TOTAL" title="Mars - Luna Flows" showLabels={false}/>
+      </Grid>
+      <Grid item md={6}>
+        <LazyChartOne url="/api/getMarsLunaBorrow" xKey="DAY" yKey="LUNA_UTIL_RATIO" title="Mars - Luna Util Rate" showLabels={false}/>
       </Grid>
     </Grid>
   )
@@ -967,6 +953,8 @@ function LFGPage()
         <li>TFL - Gnosis Safe for 1B BTC? https://etherscan.io/address/0xad41bd1cf3fd753017ef5c0da8df31a3074ea1ea </li>
         <li>LFG Wallet - https://finder.extraterrestrial.money/mainnet/account/terra1gr0xesnseevzt3h4nxr64sh5gk4dwrwgszx3nw</li>
         <li>LFG/TFL Burning Wallet (Burns 1000Luna every 10 blocks for UST) - https://finder.extraterrestrial.money/mainnet/address/terra1cymh5ywgn4azak74h4gsrnakqgel4y9ssersvx</li>
+        <li>LFG/TFL BTC Wallet - https://bitinfocharts.com/bitcoin/address/bc1q9d4ywgfnd8h43da5tpcxcn6ajv590cg6d3tg6axemvljvt2k76zs50tv4q</li>
+        {/* <Button variant="contained" onClick={() => { window.open("https://snowtrace.io/token/0xab9a04808167c170a9ec4f8a87a0cd781ebcd55e", "_blank") }}>https://snowtrace.io/token/0xab9a04808167c170a9ec4f8a87a0cd781ebcd55e</Button>   */}
       </Grid>
       <Grid item md={6}>
         <LazyChartOne url="/api/getLFGBalances" xKey="DATE" yKey="LUNA_BALANCE" title="LFG Balances" showLabels={false}/>
@@ -974,6 +962,15 @@ function LFGPage()
       <Grid item md={6}>
         <LazyChartOne url="/api/getLFGVesting" xKey="DAY_DATE" yKey="CUM_SUM_AMOUNT" title="LFG Spend to Vesting Contracts" showLabels={false}/>
       </Grid>
+    </Grid>
+  )
+}
+
+function WhiteWhalePage()
+{
+  return (
+    <Grid container spacing={2}>
+      Sorry, no time to extract. - https://app.flipsidecrypto.com/dashboard/white-whale-performance-YAtxa0
     </Grid>
   )
 }
@@ -1172,6 +1169,7 @@ function FreeWillyPage()
   const [getData,setData] = useState("")
   const [getDataLUNA,setDataLUNA] = useState("")
   const [getDataETH,setDataETH] = useState("")
+  const [getDataAVAX,setDataAVAX] = useState("")
 
   React.useEffect(() => {
 
@@ -1193,13 +1191,20 @@ function FreeWillyPage()
       console.log(error);
     })
 
+    axios.get("/api/getFreeWillyAVAX").then (response => {
+      setDataAVAX(response);
+    }).catch (error => {
+      console.log(error);
+    })
+
   },[]);
 
   if (getData === "") return (<div><CircularProgress /></div>);
   if (getDataETH === "") return (<div><CircularProgress /></div>);
   if (getDataLUNA === "") return (<div><CircularProgress /></div>);
+  if (getDataAVAX === "") return (<div><CircularProgress /></div>);
 
-  console.log(getData.data);
+  //console.log(getData.data);
   //console.log(getDataETH.data);
   //console.log(getDataLUNA.data);
 
@@ -1221,13 +1226,28 @@ function FreeWillyPage()
   var c2o = generateChartOptions("bLUNA Bidding Volumes", false);
   var c2d = generateBarChartData(dLUNAxAxis, dLUNAyAxis);
 
+  var dAVAXxAxis = []
+  var dAVAXyAxis = []
+  getDataAVAX.data.query_result.bid_pools.forEach(e => {
+    dAVAXxAxis.push(e.premium_rate);
+    dAVAXyAxis.push(e.total_bid_amount / 10**9);
+  })
+  var c3o = generateChartOptions("sAVAX Bidding Volumes", false);
+  var c3d = generateBarChartData(dAVAXxAxis, dAVAXyAxis);
+
   return (
     <Grid container spacing={2}>
+    <Grid item md={12}>
+      TODO: Get aUST Values too!
+    </Grid>
     <Grid item md={6}>
       <Bar options={c1o} data={c1d} height={null}/>
     </Grid>
     <Grid item md={6}>
       <Bar options={c2o} data={c2d} height={null}/>
+    </Grid>
+    <Grid item md={6}>
+      <Bar options={c3o} data={c3d} height={null}/>
     </Grid>
     </Grid>
   )
@@ -1446,17 +1466,57 @@ return (
     <>
     <Grid container spacing={2}>
         <Grid item md={6}>
-          https://snowtrace.io/token/0xb599c3590f42f8f995ecfa0f85d2980b76862fc1
+        <Button variant="contained" onClick={() => { window.open("https://snowtrace.io/token/0xb599c3590f42f8f995ecfa0f85d2980b76862fc1", "_blank") }}>https://snowtrace.io/token/0xb599c3590f42f8f995ecfa0f85d2980b76862fc1</Button>
+          
           <br />
           UST total supply on AVAX chain: {moneyFormat.format(parseInt(getData.data.result)/10**6)}
         </Grid>
         <Grid item md={6}>
-          https://snowtrace.io/token/0xab9a04808167c170a9ec4f8a87a0cd781ebcd55e
+        <Button variant="contained" onClick={() => { window.open("https://snowtrace.io/token/0xab9a04808167c170a9ec4f8a87a0cd781ebcd55e", "_blank") }}>https://snowtrace.io/token/0xab9a04808167c170a9ec4f8a87a0cd781ebcd55e</Button>  
           <br />
           aUST total supply (Tokens) on AVAX chain: {tokenFormat6.format(parseInt(getData2.data.result)/10**6)}
           <br />
           aUST total supply (USD Value): {moneyFormat.format(parseInt(getData2.data.result)* 1.2 / 10**6)}
         </Grid>
+    </Grid>
+    </>
+    );
+}
+
+function AcmeOfSkillPage()
+{
+  const [getData,setData] = useState("")
+  const [getData2,setData2] = useState("")
+  
+  React.useEffect(() => {
+
+    // axios.get("/api/getUSTonAvax").then (response => {
+    //   setData(response);
+    // }).catch (error => {
+    //   console.log(error);
+    // })
+
+    // axios.get("/api/getaUSTonAvax").then (response => {
+    //   setData2(response);
+    // }).catch (error => {
+    //   console.log(error);
+    // })
+
+  },[]);
+
+  //if (getData === "") return (<div><CircularProgress /></div>);
+  //if (getData2 === "") return (<div><CircularProgress /></div>);
+
+return (
+    <>
+    <Grid container spacing={2}>
+      <Grid item md={12}>
+      Peers:
+      <li>https://analytics.zoho.com/open-view/2528727000000022633</li>
+      <li>https://datastudio.google.com/reporting/e568ad77-be7f-47be-8c6d-946c5f08f35b/page/p_vwnqjnbysc?s=vOcvwiJuiS0</li>
+      <li>https://mtg-oracle-static.s3.amazonaws.com/images/logo/LFG_B2/test1.html</li>
+      <li>https://app.flipsidecrypto.com/dashboard/acme-of-skill-terra-superdashboard-PoXIgf</li>
+      </Grid>
     </Grid>
     </>
     );
@@ -1642,6 +1702,7 @@ function PermanentDrawerLeft() {
               [
                 ['Anchor','/anchor.png']
                 ,['Anchor-Avax','/avax-anc.svg']
+                ,['AcmeOfSkill','/flipside.png']
                 ,['Mirror',"/mirror.png"]
                 ,['Knowhere','/kw.jpeg'] 
                 ,['RandomEarth','/RE.png']
@@ -1654,6 +1715,7 @@ function PermanentDrawerLeft() {
                 ,['Mars', '/mars.jpeg']
                 ,['RiskHarbor', '/RH.jpg']
                 ,['LFG', '/LFG.jpg']
+                ,['WhiteWhale', '/w-whale.svg']
               ].sort().map( n => {
                 return (
                   <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
@@ -1687,7 +1749,7 @@ function PermanentDrawerLeft() {
               ,'Loterra'
               ,'Terra World Token'
               ,'Playnity'
-              ,'White Whale'
+              
               ,'Terraland'
               ,'Terra Floki'
               ,'Messier.art'
