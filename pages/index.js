@@ -159,6 +159,9 @@ function Pages(props) {
   if (props.pageNumber === 'RiskHarbor') {return (<div><RiskHarborPage /></div>);}
   if (props.pageNumber === 'LFG') {return (<div><LFGPage /></div>);}
   if (props.pageNumber === 'WhiteWhale') {return (<div><WhiteWhalePage /></div>);}
+
+  if (props.pageNumber === 'Astroport Pools') {return (<div><AstroportPage /></div>);}
+  if (props.pageNumber === 'Terraswap Pools') {return (<div><TerraswapPage /></div>);}
   
   
   
@@ -228,6 +231,11 @@ function generateChartOptions(myVar, showLegend) {
     },
   };
 }
+
+
+
+
+
 
 function generateLRChartOptions(myVar) {
   return {
@@ -299,6 +307,62 @@ function generateBarChartData(xValues, yValues) {
         type: 'bar',
         data: yValues,
         backgroundColor: colors[0]
+      }
+    ],
+  };
+}
+
+function generateLPChartOptions(myLHS, myRHS) {
+  return {
+    elements: {
+      bar: {
+        borderWidth: 2,
+      },
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false,
+        position: 'top',
+      },
+      title: {
+        display: true,
+        text: myLHS + " - " + myRHS,
+      },
+    },
+    scales: {
+      y1: {
+        type: 'linear',
+        display: true,
+        position: 'left',
+      },
+      y2: {
+        type: 'linear',
+        display: true,
+        position: 'right',
+        grid: {
+          drawOnChartArea: false,
+        },
+      },
+    },
+  };
+}
+
+function generateLPChartData(xValues, yValues, y2Values) {
+  return {
+    labels: xValues,
+    datasets: [
+      {
+        type: 'line',
+        data: yValues,
+        backgroundColor: colors[20],
+        yAxisID: 'y1',
+      },
+      {
+        type: 'line',
+        data: y2Values,
+        backgroundColor: colors[0],
+        yAxisID: 'y2',
       }
     ],
   };
@@ -409,6 +473,43 @@ function LazyChartOne(props)
 
   var chartOptions = generateChartOptions(title, showLabels);
   var chartData = generateBarChartData(xValues, yValues);
+  
+  return <Bar md={6} options={chartOptions} data={chartData} height={null}/>
+}
+
+function LazyChartLP(props)
+{
+  const { url, xKey, yLHS, yRHS, titleLHS, titleRHS, filterContract, showLabels } = props;
+  const [getData, setData] = useState("")
+
+  React.useEffect(() => {
+    axios.get(url).then (response => {
+      setData(response);
+    }).catch (error => {
+      console.log(error);
+    })
+  },[]);
+
+  if (getData === "") return (<div><CircularProgress /></div>);
+  //console.log(getData);
+  var xValues = []
+  var yValues = []
+  var y2Values = []
+  var getTitleLHS = "";
+  var getTitleRHS = "";
+  getData.data.forEach( d => {
+    if (d.CONTRACT_ADDRESS === filterContract)
+    {
+      xValues.push(d[xKey].substr(0,10));
+      yValues.push(d[yLHS]);
+      y2Values.push(d[yRHS]);
+      getTitleLHS = d[titleLHS];
+      getTitleRHS = d[titleRHS];
+    }
+  })
+
+  var chartOptions = generateLPChartOptions(getTitleLHS, getTitleRHS);
+  var chartData = generateLPChartData(xValues, yValues, y2Values);
   
   return <Bar md={6} options={chartOptions} data={chartData} height={null}/>
 }
@@ -971,6 +1072,56 @@ function WhiteWhalePage()
   return (
     <Grid container spacing={2}>
       Sorry, no time to extract. - https://app.flipsidecrypto.com/dashboard/white-whale-performance-YAtxa0
+    </Grid>
+  )
+}
+
+function AstroportPage()
+{
+  return (
+    <Grid container spacing={2}>
+      <Grid md={6} item>
+        <LazyChartLP url="/api/getAstroportLP" xKey="BLOCK_TIMESTAMP" yLHS="TOKEN_0_AMOUNT" yRHS="TOKEN_1_AMOUNT" titleLHS="TOKEN_0_CURRENCY" titleRHS="TOKEN_1_CURRENCY" filterContract="terra1gxjjrer8mywt4020xdl5e5x7n6ncn6w38gjzae"/>
+      </Grid>
+      <Grid md={6} item>
+        <LazyChartLP url="/api/getAstroportLP" xKey="BLOCK_TIMESTAMP" yLHS="TOKEN_0_AMOUNT" yRHS="TOKEN_1_AMOUNT" titleLHS="TOKEN_0_CURRENCY" titleRHS="TOKEN_1_CURRENCY" filterContract="terra1qr2k6yjjd5p2kaewqvg93ag74k6gyjr7re37fs"/>
+      </Grid>
+      <Grid md={6} item>
+        <LazyChartLP url="/api/getAstroportLP" xKey="BLOCK_TIMESTAMP" yLHS="TOKEN_0_AMOUNT" yRHS="TOKEN_1_AMOUNT" titleLHS="TOKEN_0_CURRENCY" titleRHS="TOKEN_1_CURRENCY" filterContract="terra1m6ywlgn6wrjuagcmmezzz2a029gtldhey5k552"/>
+      </Grid>
+    </Grid>
+  )
+}
+
+
+function TerraswapPage()
+{
+  /*
+
+  */
+  return (
+    <Grid container spacing={2}>
+        {
+          ['terra1gm5p3ner9x9xpwugn9sp6gvhd0lwrtkyrecdn3'
+          ,'terra1jxazgm67et0ce260kvrpfv50acuushpjsz2y0p'
+          ,'terra1zrzy688j8g6446jzd88vzjzqtywh6xavww92hy'
+          ,'terra1tndcaqxkpc5ce9qee5ggqf430mr2z3pefe5wj6'
+          ,'terra1amv303y8kzxuegvurh0gug2xe9wkgj65enq2ux'
+          ,'terra178jydtjvj4gw8earkgnqc80c3hrmqj4kw2welz'].map(z => {
+            return (
+              <Grid md={6} item>
+                <LazyChartLP
+                 url="/api/getTerraswapLP"
+                 xKey="BLOCK_TIMESTAMP"
+                 yLHS="TOKEN_0_AMOUNT"
+                 yRHS="TOKEN_1_AMOUNT"
+                 titleLHS="TOKEN_0_CURRENCY"
+                 titleRHS="TOKEN_1_CURRENCY"
+                 filterContract={z}/>
+              </Grid>
+            )
+          })
+        }
     </Grid>
   )
 }
@@ -1716,6 +1867,8 @@ function PermanentDrawerLeft() {
                 ,['RiskHarbor', '/RH.jpg']
                 ,['LFG', '/LFG.jpg']
                 ,['WhiteWhale', '/w-whale.svg']
+                ,['Astroport Pools', '/astro.jpg']
+                ,['Terraswap Pools', '/terraswap.png']
               ].sort().map( n => {
                 return (
                   <ListItem button key={n[0]} onClick={() => setPage(n[0])}>
@@ -1730,13 +1883,10 @@ function PermanentDrawerLeft() {
             <Divider></Divider>
             {
               [
-              'Astroport'
-              ,'Loop'
-              ,'TerraSwap'
+              'Loop'
               ,'Luart'
               ,'Talis'
               ,'OnePlanet'
-              ,'Mars'
               ,'Pylon'
               ,'Prism'
               ,'StarTerra'
@@ -1745,11 +1895,11 @@ function PermanentDrawerLeft() {
               ,'Orion'
               ,'Glow'
               ,'Alte'
+              ,'Alto'
               ,'Kujira'
               ,'Loterra'
               ,'Terra World Token'
               ,'Playnity'
-              
               ,'Terraland'
               ,'Terra Floki'
               ,'Messier.art'
