@@ -1077,7 +1077,7 @@ function LFGPage()
 <br />
         <Button variant="contained" 
         onClick={() => { window.open("https://t.co/MWtWGBrRrM",
-         "_blank") }}>cryptoicicle's page</Button>
+         "_blank") }}>cryptoicicle page</Button>
 
       </Grid>
       <Grid item md={6}>
