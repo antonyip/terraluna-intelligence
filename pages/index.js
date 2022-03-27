@@ -1076,7 +1076,7 @@ function LFGPage()
          "_blank") }}>[BTC] LFG/TFL BTC Wallet</Button>
 <br />
         <Button variant="contained" 
-        onClick={() => { window.open("https://t.co/MWtWGBrRrM",
+        onClick={() => { window.open("https://analytics.zoho.com/open-view/2528727000000006323",
          "_blank") }}>cryptoicicle page</Button>
 
       </Grid>
