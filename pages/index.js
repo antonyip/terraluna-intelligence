@@ -1049,13 +1049,36 @@ function LFGPage()
   return (
     <Grid container spacing={2}>
       <Grid item md={12}>
-        <li>TFL - https://finder.extraterrestrial.money/mainnet/address/terra1dp0taj85ruc299rkdvzp4z5pfg6z6swaed74e6 </li>
-        <li>TFL - Hotwallet? - https://etherscan.io/address/0xe3011271416f3a827e25d5251d34a56d83446159</li>
-        <li>TFL - Gnosis Safe for 1B BTC? https://etherscan.io/address/0xad41bd1cf3fd753017ef5c0da8df31a3074ea1ea </li>
-        <li>LFG Wallet - https://finder.extraterrestrial.money/mainnet/account/terra1gr0xesnseevzt3h4nxr64sh5gk4dwrwgszx3nw</li>
-        <li>LFG/TFL Burning Wallet (Burns 1000Luna every 10 blocks for UST) - https://finder.extraterrestrial.money/mainnet/address/terra1cymh5ywgn4azak74h4gsrnakqgel4y9ssersvx</li>
-        <li>LFG/TFL BTC Wallet - https://bitinfocharts.com/bitcoin/address/bc1q9d4ywgfnd8h43da5tpcxcn6ajv590cg6d3tg6axemvljvt2k76zs50tv4q</li>
-        {/* <Button variant="contained" onClick={() => { window.open("https://snowtrace.io/token/0xab9a04808167c170a9ec4f8a87a0cd781ebcd55e", "_blank") }}>https://snowtrace.io/token/0xab9a04808167c170a9ec4f8a87a0cd781ebcd55e</Button>   */}
+        LFG Wallets
+<br />
+        <Button variant="contained" 
+        onClick={() => { window.open("https://finder.extraterrestrial.money/mainnet/address/terra1dp0taj85ruc299rkdvzp4z5pfg6z6swaed74e6",
+         "_blank") }}>[TERRA] TFL</Button>
+<br />
+        <Button variant="contained" 
+        onClick={() => { window.open("https://etherscan.io/address/0xe3011271416f3a827e25d5251d34a56d83446159",
+         "_blank") }}>[ETH] TFL - Hotwallet</Button>
+<br />
+        <Button variant="contained" 
+        onClick={() => { window.open("https://etherscan.io/address/0xad41bd1cf3fd753017ef5c0da8df31a3074ea1ea",
+         "_blank") }}>[ETH] TFL - Gnosis Safe</Button>
+<br />
+        <Button variant="contained" 
+        onClick={() => { window.open("https://finder.extraterrestrial.money/mainnet/account/terra1gr0xesnseevzt3h4nxr64sh5gk4dwrwgszx3nw",
+         "_blank") }}>[TERRA] LFG Wallet</Button>
+<br />
+        <Button variant="contained" 
+        onClick={() => { window.open("https://finder.extraterrestrial.money/mainnet/address/terra1cymh5ywgn4azak74h4gsrnakqgel4y9ssersvx",
+         "_blank") }}>[TERRA] LFG/TFL Burning Wallet (Burns 1000Luna every 10 blocks for UST)</Button>
+<br />
+        <Button variant="contained" 
+        onClick={() => { window.open("https://bitinfocharts.com/bitcoin/address/bc1q9d4ywgfnd8h43da5tpcxcn6ajv590cg6d3tg6axemvljvt2k76zs50tv4q",
+         "_blank") }}>[BTC] LFG/TFL BTC Wallet</Button>
+<br />
+        <Button variant="contained" 
+        onClick={() => { window.open("https://t.co/MWtWGBrRrM",
+         "_blank") }}>cryptoicicle's page</Button>
+
       </Grid>
       <Grid item md={6}>
         <LazyChartOne url="/api/getLFGBalances" xKey="DATE" yKey="LUNA_BALANCE" title="LFG Balances" showLabels={false}/>
@@ -1071,7 +1094,8 @@ function WhiteWhalePage()
 {
   return (
     <Grid container spacing={2}>
-      Sorry, no time to extract. - https://app.flipsidecrypto.com/dashboard/white-whale-performance-YAtxa0
+      <Button variant="contained" onClick={() => { window.open("https://app.flipsidecrypto.com/dashboard/white-whale-performance-YAtxa0", "_blank") }}>https://app.flipsidecrypto.com/dashboard/white-whale-performance-YAtxa0</Button>
+      ... Sorry, no time to extract.
     </Grid>
   )
 }
@@ -1109,7 +1133,7 @@ function TerraswapPage()
           ,'terra1amv303y8kzxuegvurh0gug2xe9wkgj65enq2ux'
           ,'terra178jydtjvj4gw8earkgnqc80c3hrmqj4kw2welz'].map(z => {
             return (
-              <Grid md={6} item>
+              <Grid md={6} item key={z}>
                 <LazyChartLP
                  url="/api/getTerraswapLP"
                  xKey="BLOCK_TIMESTAMP"
@@ -1410,8 +1434,6 @@ function AnchorPage()
   const [getDataStats,setDataStats] = useState("")
   const [getAncFlows,setAncFlows] = useState("")
   
-
-  //TODO: ADD this https://app.flipsidecrypto.com/dashboard/anchor-collaterals-UxMbQB
   React.useEffect(() => {
 
     axios.get("/api/getAncDailyDeals").then (response => {
@@ -1585,6 +1607,7 @@ function AnchorPage()
           <LazyChartOne url="/api/getAncbEthStats" xKey="DATES" yKey="TVL_AMT" title="bETH TVL (bETH)" showLabels={false}/>
         </Grid>
     </Grid>
+    More - https://forgash.retool.com/embedded/public/e54597fe-837b-4a13-8dbc-332c8226f6f4
     </>
     );
 }
